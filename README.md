@@ -1,2 +1,2 @@
 # team_starship
-Repository for Game Dev Class
+<b>Repository for Game Dev Class</b><br>
