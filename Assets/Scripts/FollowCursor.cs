@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-// Work in Progress, Alternative to ShipMovement script
 
 public class FollowCursor : MonoBehaviour {
 
@@ -23,31 +22,6 @@ public class FollowCursor : MonoBehaviour {
         mousePos.z = depth;
 
         this.transform.position = Camera.main.ScreenToWorldPoint(mousePos);
+    } 
 
-        //Vector3 direction = new Vector3(horizontal, vertical, 0);
-        //Vector3 finalDirection = new Vector3(horizontal, vertical, 5.0f);
-
-        // Movement direction
-        //transform.position += direction * movementSpeed * Time.deltaTime;
-
-        // Aiming direction
-        //transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(finalDirection), Mathf.Deg2Rad * 50.0f);
-    }
-    /*
-	void Update () {
-        var mousePos = Input.mousePosition;
-
-        float horizontal = mousePos.x;
-        float vertical = mousePos.y;
-
-        Vector3 direction = new Vector3(horizontal, vertical, 0);
-        Vector3 finalDirection = new Vector3(horizontal, vertical, 5.0f);
-        
-        // Movement direction
-        transform.position += direction * movementSpeed * Time.deltaTime;
-
-        // Aiming direction
-        transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(finalDirection), Mathf.Deg2Rad * 50.0f);           
-	}
-    */
 }

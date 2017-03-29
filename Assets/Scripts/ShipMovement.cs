@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class ShipMovement : MonoBehaviour {
 
+    public Transform target;
+
     public float movementSpeed = 10.0f;
 
 	// Use this for initialization
@@ -23,6 +25,10 @@ public class ShipMovement : MonoBehaviour {
         transform.position += direction * movementSpeed * Time.deltaTime;
 
         // Aiming direction
+        // Rotate towards reticle using keyboard
         transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(finalDirection), Mathf.Deg2Rad * 50.0f);
-	}
+
+        //Rotate towards reticle using mouse cursor
+        //transform.rotation = Quaternion.RotateTowards(target.rotation, Quaternion.LookRotation(finalDirection), Mathf.Deg2Rad * 50.0f);
+    }
 }
