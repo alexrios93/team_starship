@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ShootForward : MonoBehaviour {
 
-    public Rigidbody bullet;
+    public Rigidbody projectile;
     public float velocity = 10.0f;
 
     // Use this for initialization
@@ -18,8 +18,8 @@ public class ShootForward : MonoBehaviour {
     {
         if (Input.GetButtonDown("Fire1"))
         {
-            Rigidbody newBullet = Instantiate(bullet, transform.position, transform.rotation) as Rigidbody;
-            newBullet.AddForce(transform.forward * velocity, ForceMode.VelocityChange);
+            Rigidbody newProjectile = Instantiate(projectile, transform.position, transform.rotation) as Rigidbody;
+            newProjectile.AddForce(transform.forward * velocity, ForceMode.VelocityChange);
         }
     }
 }
