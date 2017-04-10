@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CameraScript : MonoBehaviour {
+public class OldCameraScript : MonoBehaviour {
 
     public Transform target;
     public Vector3 distance = new Vector3 (0.0f, 2.0f, -7.0f);
