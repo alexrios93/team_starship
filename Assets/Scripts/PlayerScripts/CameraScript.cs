@@ -1,9 +1,6 @@
 using UnityEngine;
 using System.Collections;
 
-/// <summary>
-/// Componente para todo lo referente a la camara 
-/// </summary>
 public class CameraScript : MonoBehaviour {
 	
 	public Ray ray;		
