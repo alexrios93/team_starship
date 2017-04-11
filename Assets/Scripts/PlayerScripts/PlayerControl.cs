@@ -10,10 +10,11 @@ public class PlayerControl : MonoBehaviour
 {
 	public int maxSpeed = 70;
 	public int minSpeed = 10;
+    public int normalSpeed = 30;
 	public float rotationSpeed = 150;
 	public bool status = false;
 	
-	public int currrentSpeed = 30;
+	private int currrentSpeed = 30;
 	private GameObject[] boosters;
 	
 	void Start(){
@@ -40,7 +41,8 @@ public class PlayerControl : MonoBehaviour
 			//	MaxBoosters(0.3f);
 			}//Cruise speed
 			else{
-				currrentSpeed = 30;
+                //	currrentSpeed = 30;
+                currrentSpeed = normalSpeed;
 			//	MaxBoosters(0.55f);
 			}
 			
