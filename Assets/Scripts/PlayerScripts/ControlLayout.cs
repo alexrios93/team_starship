@@ -21,7 +21,7 @@ public class ControlLayout : MonoBehaviour {
 		
 		GUI.Label (new Rect(10, 100, 250, 25), "CONTROLS:");
 		GUI.Label (new Rect(10, 125, 250, 25), "W - Boost");
-		GUI.Label (new Rect(10, 150, 250, 25), "S - Air Break");
+		GUI.Label (new Rect(10, 150, 250, 25), "S - Break");
 		GUI.Label (new Rect(10, 175, 250, 25), "A - Rotate Left");
 		GUI.Label (new Rect(10, 200, 250, 25), "D - Rotate Right");				
 		GUI.Label (new Rect(10, 225, 250, 25), "Mouse look to rotate camera");
