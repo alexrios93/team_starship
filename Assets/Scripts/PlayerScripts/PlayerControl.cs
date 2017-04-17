@@ -58,6 +58,18 @@ public class PlayerControl : MonoBehaviour
  //            //booster.GetComponent<ParticleSystem>().main.startSizeMultiplier = intensity;
  //        }
 	// }
-
+    
+    // //Test DAMAGE
+    // void OnTriggerStay(Collider other)
+    // {
+    //     if(other.name == "Health")
+    //     {
+    //         Debug.Log("Healing");
+    //     }
+    //     if (other.name == "Damage")
+    //     {
+    //         Debug.Log("Hurting");
+    //     }
+    // }
 }
 
