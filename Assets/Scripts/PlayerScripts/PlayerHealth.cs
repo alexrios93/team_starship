@@ -46,10 +46,6 @@ public class PlayerHealth : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		//if(healthTransform.GetComponent<CanvasRenderer>().EnableRectClipping == true)
-        //{
-          //  healthTransform.GetComponent<CanvasRenderer>().EnableRectClipping = false;
-        //}
 	}
 
 

@@ -11,10 +11,10 @@ public class ControlLayout : MonoBehaviour {
 	}
 	
 	void OnGUI () {
-	    if (_run == false && GUI.Button (new Rect (Screen.width/2-125,Screen.height/2-35,250,70), "Play")) {
+	    if (_run == false && GUI.Button (new Rect (Screen.width/2-125, Screen.height/2-35, 250, 70), "Play")) {
 			_playerControl.status = true;
 	        _run = true;
-	    } else if (_run == true && GUI.Button (new Rect (10,275,100,50), "Stop")) {
+	    } else if (_run == true && GUI.Button (new Rect (10, 275, 100, 50), "Stop")) {
 			_playerControl.status = false;
 	        _run = false;
 	    }
