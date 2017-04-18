@@ -4,12 +4,13 @@ using UnityEngine;
 
 public class SeekAndDestroy : MonoBehaviour {
     public GameObject Target;
+    public GameObject TargetAlternative;
     private float MaxSeekSpeed = 10.0f;
     private float MaxOrbitSpeed = 43.0f;
     private float TargetDistance;
-    private float MinOrbitDistance = 50.0f;
-    private float MaxOrbitDistance = 75.0f;
-    private float OrbitDistance = 65.0f;
+    private float MinOrbitDistance = 75.0f;
+    private float MaxOrbitDistance = 125.0f;
+    private float OrbitDistance = 100.0f;
     //private float RotationSpeed = 10.0f;
 
     public Rigidbody projectile;
@@ -25,30 +26,46 @@ public class SeekAndDestroy : MonoBehaviour {
 	// Update is called once per frame
 	void Update ()
     {
-        ////CHECK TARGET DISTANCE////
-        TargetDistance = Vector3.Distance(transform.position, Target.transform.position);
-
-        ////SEEK////
-        if(TargetDistance > MaxOrbitDistance)
+        ////CHECK IF BOTH TARGETS ARE DESTROYED//
+        if ((Target == null) & (TargetAlternative == null))
         {
-            transform.LookAt(Target.transform);
-            transform.position = Vector3.MoveTowards(transform.position, Target.transform.position, MaxSeekSpeed);
+            ////VICTORY SCREECH REEEEEEEEEEEEEEEE////
         }
-        
-        ////DESTROY////
-        if ((MinOrbitDistance < TargetDistance) & (TargetDistance < MaxOrbitDistance))
+        else
         {
-            ////ORBIT TARGET////
-            transform.RotateAround(Target.transform.position, Vector3.up, MaxOrbitSpeed * Time.deltaTime);
-            var desiredPosition = (transform.position - Target.transform.position).normalized * OrbitDistance + Target.transform.position;
-            transform.position = Vector3.MoveTowards(transform.position, desiredPosition, Time.deltaTime * MaxOrbitSpeed);
-            
-            ////FIRE LASERS////
-            if (LaserCoolDown < (Time.time - LastLaserFire))
+            ////SWITCH TARGET IF CURRENT IS DESTROYED////
+            if (Target == null)
             {
-                LastLaserFire = Time.time;
-                Rigidbody newProjectile = Instantiate(projectile, transform.position, transform.rotation) as Rigidbody;
-                newProjectile.AddForce(transform.forward * velocity, ForceMode.VelocityChange);
+                Target = TargetAlternative;
+            }
+
+            ////CHECK TARGET DISTANCE////
+            TargetDistance = Vector3.Distance(transform.position, Target.transform.position);
+
+            ////SEEK////
+            if (TargetDistance > MaxOrbitDistance)
+            {
+                transform.LookAt(Target.transform);
+                transform.position = Vector3.MoveTowards(transform.position, Target.transform.position, MaxSeekSpeed);
+            }
+
+            ////DESTROY////
+            if ((MinOrbitDistance < TargetDistance) & (TargetDistance < MaxOrbitDistance))
+            {
+                ////ORBIT TARGET////
+                transform.RotateAround(Target.transform.position, Vector3.up, MaxOrbitSpeed * Time.deltaTime);
+                var desiredPosition = (transform.position - Target.transform.position).normalized * OrbitDistance + Target.transform.position;
+                transform.position = Vector3.MoveTowards(transform.position, desiredPosition, Time.deltaTime * MaxOrbitSpeed);
+
+                ////FIRE LASERS////
+                if (LaserCoolDown < (Time.time - LastLaserFire))
+                {
+                    LastLaserFire = Time.time;
+                    transform.LookAt(Target.transform);
+                    Rigidbody newProjectile = Instantiate(projectile, transform.position, transform.rotation) as Rigidbody;
+                    newProjectile.AddForce(transform.forward * velocity, ForceMode.VelocityChange);
+                    newProjectile.tag = "EnemyLaser";
+                }
             }
         }
     }
