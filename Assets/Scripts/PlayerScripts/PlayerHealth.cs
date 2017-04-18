@@ -35,6 +35,9 @@ public class PlayerHealth : MonoBehaviour {
     public float coolDown;
     private bool onCD;
 
+    public GameObject Explosion;
+    private GameObject ExplosionFX;
+
     // Use this for initialization
     void Start () {
         cachedY = healthTransform.position.y;
@@ -59,10 +62,14 @@ public class PlayerHealth : MonoBehaviour {
         {
             visualHealth.GetComponent<Image>().color = new Color32((byte)MapValues(currentHealth, maxHealth / 2, maxHealth, 255, 0), 255, 0, 255);
         }
+        if (currentHealth <= 0) // If health reaches 0%
+        {
+            Explode();
+        }
         else //Less than 50%
         {
             visualHealth.GetComponent<Image>().color = new Color32(255, (byte)MapValues(currentHealth, 0, maxHealth / 2, 0, 255), 0, 255);
-        }
+        }        
     }
 
     IEnumerator CoolDownDmg()
@@ -84,7 +91,8 @@ public class PlayerHealth : MonoBehaviour {
             }            
             //Debug.Log("Healing");
         }
-        if (other.name == "DamageTest")
+        //if (other.name == "DamageTest")
+        if (other.name == "Nebula")
         {
             if (!onCD && currentHealth > 0)
             {
@@ -98,5 +106,12 @@ public class PlayerHealth : MonoBehaviour {
     private float MapValues(float x, float inMin, float inMax, float outMin, float outMax)
     {
         return (x - inMin) * (outMax - outMin) / (inMax - inMin) + outMin;
+    }
+
+    void Explode()
+    {
+        ExplosionFX = Instantiate(Explosion, this.transform.position, this.transform.rotation);
+        ExplosionFX.transform.localScale = gameObject.transform.localScale;
+        Destroy(gameObject);
     }
 }
