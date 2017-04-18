@@ -16,6 +16,8 @@ public class PlayerControl : MonoBehaviour
 	
 	private int currrentSpeed = 30;
 	private GameObject[] boosters;
+
+    public Texture2D crosshair;
 	
 	void Start(){
 		boosters = GameObject.FindGameObjectsWithTag("Booster");		
@@ -71,5 +73,14 @@ public class PlayerControl : MonoBehaviour
     //         Debug.Log("Hurting");
     //     }
     // }
+
+    //DELETE HERE IF FAULTY 4/17
+    void OnGUI()
+    {
+        float vectorx = Input.mousePosition.x;
+        float vectory = Input.mousePosition.y;
+        GUI.DrawTexture(new Rect(vectorx - 15f, -vectory + Screen.height - 15f, 30f, 30f), crosshair);
+        
+    }
 }
 
