@@ -16,7 +16,7 @@ public class ShootForward : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetButtonDown("Fire1"))
+        if (Input.GetButtonDown("A Button") ||Input.GetButtonDown("Fire1"))
         {
             Rigidbody newProjectile = Instantiate(projectile, transform.position, transform.rotation) as Rigidbody;
             newProjectile.AddForce(transform.forward * velocity, ForceMode.VelocityChange);

@@ -17,6 +17,8 @@ public class PlayerControl : MonoBehaviour
 	private int currrentSpeed = 30;
 	private GameObject[] boosters;
 
+	public float movementSpeed = 1.5f;
+
     public Texture2D crosshair;
 	
 	void Start(){
@@ -28,17 +30,17 @@ public class PlayerControl : MonoBehaviour
 		//Coordinates pause - play with manager object
 		if (status){
 			//Rotation manager
-			if (Input.GetKey(KeyCode.A))
+			if (Input.GetButton("Left Bumper") || Input.GetKey(KeyCode.A))
 				transform.Rotate(0, 0, Time.deltaTime * rotationSpeed);
-			else if (Input.GetKey(KeyCode.D))
+			else if (Input.GetButton("Right Bumper") || Input.GetKey(KeyCode.D))
 				transform.Rotate(0, 0, -Time.deltaTime * rotationSpeed);
 			
 			//Max speed
-			if (Input.GetKey(KeyCode.W)){
+			if (Input.GetButton("Right Trigger") || Input.GetButton("Right Thumb") || Input.GetKey(KeyCode.W)){
 				currrentSpeed = maxSpeed;
 			//	MaxBoosters(0.65f);
 			}//Min speed
-			else if (Input.GetKey(KeyCode.S)){
+			else if (Input.GetButton("Left Trigger") || Input.GetButton("Left Thumb") || Input.GetKey(KeyCode.S)){
 				currrentSpeed = minSpeed;
 			//	MaxBoosters(0.3f);
 			}//Cruise speed
@@ -48,8 +50,17 @@ public class PlayerControl : MonoBehaviour
 			//	MaxBoosters(0.55f);
 			}
 			
-			Vector3 mouseMovement = (Input.mousePosition - (new Vector3(Screen.width, Screen.height, 0) / 2.0f)) * 1;
-			transform.Rotate(new Vector3(-mouseMovement.y, mouseMovement.x, -mouseMovement.x) * 0.025f);
+			// Mouse Control
+			//Vector3 mouseMovement = (Input.mousePosition - (new Vector3(Screen.width, Screen.height, 0) / 2.0f)) * 1; 
+			//transform.Rotate(new Vector3(-mouseMovement.y, mouseMovement.x, -mouseMovement.x) * 0.025f);
+
+			// Joystick Control
+            float horizontal = Input.GetAxis("Horizontal");
+            float vertical = Input.GetAxis("Vertical");
+
+            transform.Rotate(new Vector3(-vertical, horizontal, 0) * movementSpeed);
+            transform.Translate(Vector3.forward * Time.deltaTime * currrentSpeed);
+
 			transform.Translate(Vector3.forward * Time.deltaTime * currrentSpeed);
 		}
     }
