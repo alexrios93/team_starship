@@ -14,18 +14,18 @@ public class ControlLayout : MonoBehaviour {
 	    if (_run == false && GUI.Button (new Rect (Screen.width/2-125, Screen.height/2-35, 250, 70), "Play")) {
 			_playerControl.status = true;
 	        _run = true;
-	    } else if (_run == true && GUI.Button (new Rect (10, 275, 100, 50), "Stop")) {
+	    } else if (_run == true && GUI.Button (new Rect (10, Screen.height / 2 + 25, 100, 50), "Stop")) {
 			_playerControl.status = false;
 	        _run = false;
 	    }
 
-        GUI.Label (new Rect(10, 100, 250, 25), "CONTROLS:");
-		GUI.Label (new Rect(10, 125, 250, 25), "W - Boost");
-		GUI.Label (new Rect(10, 150, 250, 25), "S - Break");
-		GUI.Label (new Rect(10, 175, 250, 25), "A - Rotate Left");
-		GUI.Label (new Rect(10, 200, 250, 25), "D - Rotate Right");				
-		GUI.Label (new Rect(10, 225, 250, 25), "Mouse look to rotate camera");
-		GUI.Label (new Rect(10, 250, 250, 25), "Mouse left-click to fire laser");
+        GUI.Label (new Rect(10, Screen.height / 2 - 150, 250, 25), "CONTROLS:");
+		GUI.Label (new Rect(10, Screen.height / 2 - 125, 250, 25), "Left Stick - Control Ship");
+		GUI.Label (new Rect(10, Screen.height / 2 - 100, 250, 25), "A Button - Fire Laser");
+		GUI.Label (new Rect(10, Screen.height / 2 - 75, 250, 25), "Left Bumper - Rotate Left");
+		GUI.Label (new Rect(10, Screen.height / 2 - 50, 250, 25), "Right Bumper - Rotate Right");				
+		GUI.Label (new Rect(10, Screen.height / 2 - 25, 250, 25), "Right Stick Press - Boost");
+		GUI.Label (new Rect(10, Screen.height / 2, 250, 25), "Left Stick Press - Break");
 	}
 
     void Update()
