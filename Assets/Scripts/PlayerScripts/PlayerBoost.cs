@@ -53,7 +53,7 @@ public class PlayerBoost : MonoBehaviour {
         {
             if(!onCD && currentBoost < maxBoost)
             {
-                StartCoroutine(CoolDownDmg());
+                StartCoroutine(CoolDown());
                 CurrentBoost += 1;
             }            
             //Debug.Log("Healing");
@@ -62,7 +62,7 @@ public class PlayerBoost : MonoBehaviour {
         {
             if (!onCD && currentBoost > 0)
             {
-                StartCoroutine(CoolDownDmg());
+                StartCoroutine(CoolDown());
                 CurrentBoost -= 1;
             }
             //Debug.Log("Hurting");
@@ -93,7 +93,7 @@ public class PlayerBoost : MonoBehaviour {
         }        
     }
 
-    IEnumerator CoolDownDmg()
+    IEnumerator CoolDown()
     {
         onCD = true;
         yield return new WaitForSeconds(coolDown);
