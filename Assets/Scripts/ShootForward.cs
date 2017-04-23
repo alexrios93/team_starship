@@ -6,6 +6,7 @@ public class ShootForward : MonoBehaviour {
 
     public Rigidbody projectile;
     public float velocity = 10.0f;
+    public bool status = false;
 
     // Use this for initialization
     void Start()
@@ -16,10 +17,14 @@ public class ShootForward : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetButtonDown("A Button") ||Input.GetButtonDown("Fire1"))
+        //Coordinates pause - play with manager object
+        if (status)
         {
-            Rigidbody newProjectile = Instantiate(projectile, transform.position, transform.rotation) as Rigidbody;
-            newProjectile.AddForce(transform.forward * velocity, ForceMode.VelocityChange);
+            if (Input.GetButtonDown("A Button") || Input.GetButtonDown("Fire1"))
+            {
+                Rigidbody newProjectile = Instantiate(projectile, transform.position, transform.rotation) as Rigidbody;
+                newProjectile.AddForce(transform.forward * velocity, ForceMode.VelocityChange);
+            }
         }
     }
 }
