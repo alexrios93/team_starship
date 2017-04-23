@@ -17,13 +17,19 @@ public class PlayerControl : MonoBehaviour
 	
 	private int currrentSpeed = 30;
 	private GameObject[] boosters;
+    private Transform[] boostersT;
 
-	public float movementSpeed = 1.5f;
+    public float movementSpeed = 1.5f;
 
     public Texture2D crosshair;
-	
+
+    private Vector3 maxBoostScale = new Vector3(3.5f,3.5f,3.5f);
+	private Vector3 minBoostScale = new Vector3(0.95f,0.95f,0.95f);
+    private Vector3 normalBoostScale = new Vector3(1.5f,1.5f,1.5f);
+
 	void Start(){
 		boosters = GameObject.FindGameObjectsWithTag("Booster");
+        boostersT = new Transform[boosters.Length];
 
         cachedY = boostTransform.position.y;
         maxXValue = boostTransform.position.x;
@@ -49,20 +55,34 @@ public class PlayerControl : MonoBehaviour
                 if (!onCD && currentBoost > 0)
                 {
                     currrentSpeed = maxSpeed;
-                    //	MaxBoosters(0.65f);
+                    for (int i = 0; i < boostersT.Length; ++i)
+                    {                        
+                        //boosters[i].transform.localScale += new Vector3(0.05f,0.05f,0.05f);
+                        boosters[i].transform.localScale = Vector3.Lerp(boosters[i].transform.localScale, maxBoostScale, Time.deltaTime);
+                    }
                     StartCoroutine(CoolDown());
                     CurrentBoost -= 1;
                 }
                 if (currentBoost <= 0) // If boost reaches 0%
                 {
                     currrentSpeed = normalSpeed;
+                    for (int i = 0; i < boostersT.Length; ++i)
+                    {
+                        //boosters[i].transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
+                        boosters[i].transform.localScale = Vector3.Lerp(boosters[i].transform.localScale, normalBoostScale, Time.deltaTime);
+                    }
                 }          
 
             }
             //Min Speed
 			else if (Input.GetButton("Left Trigger") || Input.GetButton("Left Thumb") || Input.GetKey(KeyCode.Space)){
                 currrentSpeed = minSpeed;
-                // MaxBoosters(0.3f);
+                for (int i = 0; i < boostersT.Length; ++i)
+                {
+                    //boosters[i].transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
+                    boosters[i].transform.localScale = Vector3.Lerp(boosters[i].transform.localScale, minBoostScale, Time.deltaTime);
+                }
+                //MaxBoosters(0.3f);
                 if (!onCD && currentBoost < maxBoost)
                 {                    
                     StartCoroutine(CoolDown());
@@ -71,9 +91,12 @@ public class PlayerControl : MonoBehaviour
 			}
             //Normal speed
 			else {
-                //	currrentSpeed = 30;
                 currrentSpeed = normalSpeed;
-                // MaxBoosters(0.55f);
+                for (int i = 0; i < boostersT.Length; ++i)
+                {
+                    //boosters[i].transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
+                    boosters[i].transform.localScale = Vector3.Lerp(boosters[i].transform.localScale, normalBoostScale, Time.deltaTime);
+                }
                 if (!onCD && currentBoost < maxBoost)
                 {                    
                     StartCoroutine(CoolDown());
@@ -99,9 +122,16 @@ public class PlayerControl : MonoBehaviour
 	// void MaxBoosters(float intensity){
 	// 	foreach (GameObject booster in boosters)
  //        {
- //            //booster.GetComponent<ParticleSystem>().main.startSizeMultiplier = intensity;
+ //            ///booster.GetComponent<ParticleSystem>().main.startSizeMultiplier = intensity;
+ //            ParticleSystem m_System = booster.GetComponent<ParticleSystem>();
+ //            ParticleSystem.MainModule main = m_System.main;
+ //            ParticleSystem.MinMaxCurve minMaxCurve = main.startSize; //Get Size
+
+ //            minMaxCurve.constant *= intensity; //Modify Size
+ //            main.startSize = minMaxCurve; //Assign the modified startSize back
+
  //        }
-	// }   
+ //    }   
     
     //DELETE OnGUI IF FAULTY 4/17
     void OnGUI()
