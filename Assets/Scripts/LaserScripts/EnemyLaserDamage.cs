@@ -12,9 +12,9 @@ public class EnemyLaserDamage : MonoBehaviour {
     {
         //print("i hit a " + collision.gameObject.tag);
         if (collision.gameObject.tag == "Satellite")
-        {
-            
+        {            
             collision.gameObject.SendMessage("TakeDamage", damage, SendMessageOptions.DontRequireReceiver);
+            Destroy(gameObject);
         }
     }
 }

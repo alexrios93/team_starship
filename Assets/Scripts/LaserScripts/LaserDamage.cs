@@ -11,6 +11,7 @@ public class LaserDamage : MonoBehaviour {
         if (collision.gameObject.tag == "Enemy")
         {
             collision.gameObject.SendMessage("TakeDamage", damage, SendMessageOptions.DontRequireReceiver);
+            Destroy(gameObject);
         }		
 	}
 }

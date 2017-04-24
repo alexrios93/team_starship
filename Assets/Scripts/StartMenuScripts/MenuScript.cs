@@ -37,6 +37,14 @@ public class MenuScript : MonoBehaviour {
 
     public void ExitGame()
     {
-        SceneManager.UnloadSceneAsync("StartScreen");
+        SceneManager.LoadScene("StartScreen");
+    }
+
+    // Joystick Control Start
+    void Update()
+    {
+        if(Input.GetButtonDown("Start Button")  || Input.GetButtonDown("A Button")) {
+            StartScene();
+        }
     }
 }
