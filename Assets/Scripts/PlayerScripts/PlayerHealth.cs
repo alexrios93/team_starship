@@ -38,6 +38,11 @@ public class PlayerHealth : MonoBehaviour {
     public GameObject Explosion;
     private GameObject ExplosionFX;
 
+    public AudioClip dangerSound;
+    private AudioSource source;
+    private float volLowRange = .5f;
+    private float volHighRange = 1.0f;
+
     // Use this for initialization
     void Start () {
         cachedY = healthTransform.position.y;
@@ -51,6 +56,10 @@ public class PlayerHealth : MonoBehaviour {
 	void Update () {
 	}
 
+    void Awake()
+    {
+        source = gameObject.AddComponent<AudioSource>();
+    }
 
     private void HandleHealth()
     {
@@ -94,12 +103,20 @@ public class PlayerHealth : MonoBehaviour {
         //if (other.name == "DamageTest")
         if (other.name == "Nebula")
         {
+            //float vol = Random.Range(volLowRange, volHighRange);
+            //source.PlayOneShot(dangerSound, vol);
+            source.Play();
+
             if (!onCD && currentHealth > 0)
             {
                 StartCoroutine(CoolDownDmg());
                 CurrentHealth -= 1;
             }
             //Debug.Log("Hurting");
+        }
+        else
+        {
+            source.Stop();
         }
     }
 

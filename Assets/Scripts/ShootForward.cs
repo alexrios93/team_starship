@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(AudioSource))]
 public class ShootForward : MonoBehaviour {
 
     public Rigidbody projectile;
@@ -9,10 +10,20 @@ public class ShootForward : MonoBehaviour {
     public float velocity = 10.0f;
     public bool status = false;
 
+    public AudioClip laserSound;
+    private AudioSource source;
+    private float volLowRange = .5f;
+    private float volHighRange = 1.0f;
+
     // Use this for initialization
     void Start()
     {
 
+    }
+
+    void Awake()
+    {
+        source = gameObject.AddComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -23,6 +34,9 @@ public class ShootForward : MonoBehaviour {
         {
             if (Input.GetButtonDown("A Button") || Input.GetButtonDown("Fire1"))
             {
+                float vol = Random.Range(volLowRange, volHighRange);
+                source.PlayOneShot(laserSound, vol);
+
                 Rigidbody newProjectile = Instantiate(projectile, transform.position, transform.rotation) as Rigidbody;
                 newProjectile.AddForce(transform.forward * velocity, ForceMode.VelocityChange);
             }

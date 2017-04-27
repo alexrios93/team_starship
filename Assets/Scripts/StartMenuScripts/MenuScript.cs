@@ -9,6 +9,11 @@ public class MenuScript : MonoBehaviour {
     public Button playText;
     public Button exitText;
 
+    public AudioClip selectSound;
+    private AudioSource source;
+    private float volLowRange = .5f;
+    private float volHighRange = 1.0f;
+
     // Use this for initialization
     void Start () {
         InfoMenu = InfoMenu.GetComponent<Canvas>();
@@ -19,6 +24,11 @@ public class MenuScript : MonoBehaviour {
         InfoMenu.enabled = false;
     }
 
+    void Awake()
+    {
+        source = gameObject.AddComponent<AudioSource>();
+    }
+
     public void ExitPress()
     {
         QuitMenu.enabled = true;
@@ -26,7 +36,10 @@ public class MenuScript : MonoBehaviour {
         playText.enabled = false;
         exitText.enabled = false;
 
-        if(Input.GetButtonDown("Start Button")  || Input.GetButtonDown("A Button")) {
+        float vol = Random.Range(volLowRange, volHighRange);
+        source.PlayOneShot(selectSound, vol);
+
+        if (Input.GetButtonDown("Start Button")  || Input.GetButtonDown("A Button")) {
             ExitGame();
         }
         else if(Input.GetButtonDown("Back Button")  || Input.GetButtonDown("B Button")) {
@@ -40,6 +53,9 @@ public class MenuScript : MonoBehaviour {
         InfoMenu.enabled = false;
         playText.enabled = true;
         exitText.enabled = true;
+
+        float vol = Random.Range(volLowRange, volHighRange);
+        source.PlayOneShot(selectSound, vol);
     }
 
     public void PlayPress() //Loads up the InfoMenu
@@ -49,18 +65,27 @@ public class MenuScript : MonoBehaviour {
         playText.enabled = false;
         exitText.enabled = false;
 
-        if(Input.GetButtonDown("A Button")) {
+        float vol = Random.Range(volLowRange, volHighRange);
+        source.PlayOneShot(selectSound, vol);
+
+        if (Input.GetButtonDown("A Button")) {
             StartScene();
         }
     }
 
     public void StartScene()
     {
+        float vol = Random.Range(volLowRange, volHighRange);
+        source.PlayOneShot(selectSound, vol);
+
         SceneManager.LoadScene("Main");
     }
 
     public void ExitGame()
     {
+        float vol = Random.Range(volLowRange, volHighRange);
+        source.PlayOneShot(selectSound, vol);
+
         SceneManager.LoadScene("StartScreen");
     }
 

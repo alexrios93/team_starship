@@ -27,7 +27,13 @@ public class PlayerControl : MonoBehaviour
 	private Vector3 minBoostScale = new Vector3(0.95f,0.95f,0.95f);
     private Vector3 normalBoostScale = new Vector3(1.5f,1.5f,1.5f);
 
-	void Start(){
+    public AudioClip boostSound;
+    public AudioClip idleSound;
+    private AudioSource source;
+    private float volLowRange = .5f;
+    private float volHighRange = 1.0f;
+
+    void Start(){
 		boosters = GameObject.FindGameObjectsWithTag("Booster");
         boostersT = new Transform[boosters.Length];
 
@@ -36,6 +42,11 @@ public class PlayerControl : MonoBehaviour
         minXValue = boostTransform.position.x - (boostTransform.rect.width * 2);
         currentBoost = maxBoost;
         onCD = false;
+    }
+
+    void Awake()
+    {
+        source = gameObject.AddComponent<AudioSource>();
     }
 	
     void LateUpdate()
@@ -47,16 +58,27 @@ public class PlayerControl : MonoBehaviour
 				transform.Rotate(0, 0, Time.deltaTime * rotationSpeed);
 			else if (Input.GetButton("Right Bumper") || Input.GetKey(KeyCode.E))
 				transform.Rotate(0, 0, -Time.deltaTime * rotationSpeed);
-			
-			//Max Speed
-			if (Input.GetButton("Right Trigger") || Input.GetButton("Right Thumb") || Input.GetKey(KeyCode.Mouse1)){
+            
+            //Max Speed SoundFX
+            if (Input.GetButtonDown("Right Trigger") || Input.GetButtonDown("Right Thumb") || Input.GetKeyDown(KeyCode.Mouse1))
+            {
+                float vol = Random.Range(volLowRange, volHighRange);
+                source.PlayOneShot(boostSound, vol);
+            }
+
+            //Max Speed
+            if (Input.GetButton("Right Trigger") || Input.GetButton("Right Thumb") || Input.GetKey(KeyCode.Mouse1))
+            {
                 //  currrentSpeed = maxSpeed;
                 //  MaxBoosters(0.65f);
                 if (!onCD && currentBoost > 0)
                 {
+                    //float vol = Random.Range(volLowRange, volHighRange);
+                    //source.PlayOneShot(boostSound, vol);
+
                     currrentSpeed = maxSpeed;
                     for (int i = 0; i < boostersT.Length; ++i)
-                    {                        
+                    {
                         //boosters[i].transform.localScale += new Vector3(0.05f,0.05f,0.05f);
                         boosters[i].transform.localScale = Vector3.Lerp(boosters[i].transform.localScale, maxBoostScale, Time.deltaTime);
                     }
@@ -65,17 +87,28 @@ public class PlayerControl : MonoBehaviour
                 }
                 if (currentBoost <= 0) // If boost reaches 0%
                 {
+                    //source.Stop();
+
                     currrentSpeed = normalSpeed;
                     for (int i = 0; i < boostersT.Length; ++i)
                     {
                         //boosters[i].transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
                         boosters[i].transform.localScale = Vector3.Lerp(boosters[i].transform.localScale, normalBoostScale, Time.deltaTime);
                     }
-                }          
+                }
 
             }
+
+            //Min Speed SoundFX
+            //if (Input.GetButtonDown("Left Trigger") || Input.GetButtonDown("Left Thumb") || Input.GetKeyDown(KeyCode.Space))
+            //{
+            //    float vol = Random.Range(.01f, .02f);
+            //    source.PlayOneShot(idleSound, vol);
+            //}
+
             //Min Speed
-			else if (Input.GetButton("Left Trigger") || Input.GetButton("Left Thumb") || Input.GetKey(KeyCode.Space)){
+            else if (Input.GetButton("Left Trigger") || Input.GetButton("Left Thumb") || Input.GetKey(KeyCode.Space))
+            {
                 currrentSpeed = minSpeed;
                 for (int i = 0; i < boostersT.Length; ++i)
                 {
@@ -84,13 +117,17 @@ public class PlayerControl : MonoBehaviour
                 }
                 //MaxBoosters(0.3f);
                 if (!onCD && currentBoost < maxBoost)
-                {                    
+                {
                     StartCoroutine(CoolDown());
                     CurrentBoost += 1;
                 }
-			}
+            }
             //Normal speed
-			else {
+            else {
+                //source.Stop();
+                float vol = Random.Range(.01f, .02f);
+                source.PlayOneShot(idleSound, vol);
+
                 currrentSpeed = normalSpeed;
                 for (int i = 0; i < boostersT.Length; ++i)
                 {
@@ -98,11 +135,11 @@ public class PlayerControl : MonoBehaviour
                     boosters[i].transform.localScale = Vector3.Lerp(boosters[i].transform.localScale, normalBoostScale, Time.deltaTime);
                 }
                 if (!onCD && currentBoost < maxBoost)
-                {                    
+                {
                     StartCoroutine(CoolDown());
                     CurrentBoost += 1;
                 }
-			}
+            }
 			
 			// Mouse Control
 			//Vector3 mouseMovement = (Input.mousePosition - (new Vector3(Screen.width, Screen.height, 0) / 2.0f)) * 1; 
