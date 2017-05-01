@@ -39,8 +39,7 @@ public class CameraScript : MonoBehaviour {
 
 		transform.LookAt (_target, _target.up);
 
-
-		
+        transform.eulerAngles = new Vector3(transform.eulerAngles.x, transform.eulerAngles.y, 0);		
 
 	}
 	

@@ -58,8 +58,8 @@ public class ControlLayout : MonoBehaviour {
 		GUI.Label (new Rect(10, Screen.height / 2 - 100, 250, 25), "A Button - Fire Laser");
 		GUI.Label (new Rect(10, Screen.height / 2 - 75, 250, 25), "Left Bumper - Rotate Left");
 		GUI.Label (new Rect(10, Screen.height / 2 - 50, 250, 25), "Right Bumper - Rotate Right");				
-		GUI.Label (new Rect(10, Screen.height / 2 - 25, 250, 25), "Right Stick Press - Boost");
-		GUI.Label (new Rect(10, Screen.height / 2, 250, 25), "Left Stick Press - Break");
+		GUI.Label (new Rect(10, Screen.height / 2 - 25, 250, 25), "Right Trigger - Boost");
+		GUI.Label (new Rect(10, Screen.height / 2, 250, 25), "Left Trigger - Soft Break");
 	}
 
     void Update()
