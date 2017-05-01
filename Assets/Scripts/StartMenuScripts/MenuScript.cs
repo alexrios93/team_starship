@@ -1,27 +1,43 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using UnityEngine.EventSystems;
 
-public class MenuScript : MonoBehaviour {
+public class MenuScript : MonoBehaviour
+{
 
     public Canvas QuitMenu;
     public Canvas InfoMenu;
+    public Canvas StartMenu;
     public Button playText;
     public Button exitText;
+    public Button yesText;
+    public Button noText;
+    public Button continueText;
 
     public AudioClip selectSound;
+    public AudioClip scrollSound;
     private AudioSource source;
     private float volLowRange = .5f;
     private float volHighRange = 1.0f;
+    private bool hasPlayed = false;
 
     // Use this for initialization
-    void Start () {
+    void Start()
+    {
         InfoMenu = InfoMenu.GetComponent<Canvas>();
         QuitMenu = QuitMenu.GetComponent<Canvas>();
-        playText = playText.GetComponent<Button>();
-        exitText = exitText.GetComponent<Button>();
+        StartMenu = StartMenu.GetComponent<Canvas>();
+
+        StartMenu.enabled = true;
         QuitMenu.enabled = false;
         InfoMenu.enabled = false;
+
+        playText.interactable = true;
+        exitText.interactable = true;
+        yesText.interactable = false;
+        noText.interactable = false;
+        continueText.interactable = false;
     }
 
     void Awake()
@@ -31,28 +47,35 @@ public class MenuScript : MonoBehaviour {
 
     public void ExitPress()
     {
+        StartMenu.enabled = true;
         QuitMenu.enabled = true;
         InfoMenu.enabled = false;
-        playText.enabled = false;
-        exitText.enabled = false;
+
+        playText.interactable = false;
+        exitText.interactable = false;
+        yesText.interactable = true;
+        noText.interactable = true;
+        continueText.interactable = false;
+
+        noText.Select();
 
         float vol = Random.Range(volLowRange, volHighRange);
         source.PlayOneShot(selectSound, vol);
-
-        if (Input.GetButtonDown("Start Button")  || Input.GetButtonDown("A Button")) {
-            ExitGame();
-        }
-        else if(Input.GetButtonDown("Back Button")  || Input.GetButtonDown("B Button")) {
-            NoPress();
-        }
     }
 
     public void NoPress()
     {
+        StartMenu.enabled = true;
         QuitMenu.enabled = false;
         InfoMenu.enabled = false;
-        playText.enabled = true;
-        exitText.enabled = true;
+
+        playText.interactable = true;
+        exitText.interactable = true;
+        yesText.interactable = false;
+        noText.interactable = false;
+        continueText.interactable = false;
+
+        playText.Select();
 
         float vol = Random.Range(volLowRange, volHighRange);
         source.PlayOneShot(selectSound, vol);
@@ -60,17 +83,24 @@ public class MenuScript : MonoBehaviour {
 
     public void PlayPress() //Loads up the InfoMenu
     {
+        StartMenu.enabled = true;
         QuitMenu.enabled = false;
         InfoMenu.enabled = true;
-        playText.enabled = false;
-        exitText.enabled = false;
+
+        playText.interactable = false;
+        exitText.interactable = false;
+        yesText.interactable = false;
+        noText.interactable = false;
+        continueText.interactable = true;
+
+        continueText.Select();
 
         float vol = Random.Range(volLowRange, volHighRange);
         source.PlayOneShot(selectSound, vol);
 
-        if (Input.GetButtonDown("A Button")) {
-            StartScene();
-        }
+        //if (Input.GetButtonDown("B Button")) {
+        //     NoPress();
+        //}
     }
 
     public void StartScene()
@@ -83,23 +113,28 @@ public class MenuScript : MonoBehaviour {
 
     public void ExitGame()
     {
-        float vol = Random.Range(volLowRange, volHighRange);
-        source.PlayOneShot(selectSound, vol);
+        // float vol = Random.Range(volLowRange, volHighRange);
+        // source.PlayOneShot(selectSound, vol);
 
         SceneManager.LoadScene("StartScreen");
     }
 
-    // Joystick Control Start
-    void Update()
+    public void Update()
     {
-        // if(Input.GetButtonDown("Start Button")  || Input.GetButtonDown("A Button")) {
-        //     StartScene();
-        // }
-        if(Input.GetButtonDown("Start Button")) {
-            PlayPress();
+        if (Input.GetAxis("Horizontal") > 0 || Input.GetAxis("Horizontal") < 0 || Input.GetAxis("Vertical") > 0 || Input.GetAxis("Vertical") < 0)
+        {
+            //print(Input.GetAxis("Horizontal"));
+            if (!hasPlayed)
+            {
+                float vol = Random.Range(volLowRange, volHighRange);
+                source.PlayOneShot(scrollSound, vol);
+                hasPlayed = true;
+            }
         }
-        else if(Input.GetButtonDown("Back Button")  || Input.GetButtonDown("B Button")) {
-            ExitPress();
+        else if (Input.GetAxis("Horizontal") == 0 || Input.GetAxis("Vertical") == 0)
+        {
+            hasPlayed = false;
         }
     }
+
 }

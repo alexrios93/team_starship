@@ -56,8 +56,8 @@ public class ControlLayout : MonoBehaviour {
         GUI.Label (new Rect(10, Screen.height / 2 - 150, 250, 25), "CONTROLS:");
 		GUI.Label (new Rect(10, Screen.height / 2 - 125, 250, 25), "Left Stick - Control Ship");
 		GUI.Label (new Rect(10, Screen.height / 2 - 100, 250, 25), "A Button - Fire Laser");
-		GUI.Label (new Rect(10, Screen.height / 2 - 75, 250, 25), "Left Bumper - Rotate Left");
-		GUI.Label (new Rect(10, Screen.height / 2 - 50, 250, 25), "Right Bumper - Rotate Right");				
+		GUI.Label (new Rect(10, Screen.height / 2 - 75, 250, 25), "Left Bumper - Barrel Roll Left");
+		GUI.Label (new Rect(10, Screen.height / 2 - 50, 250, 25), "Right Bumper - Barrel Roll Right");				
 		GUI.Label (new Rect(10, Screen.height / 2 - 25, 250, 25), "Right Trigger - Boost");
 		GUI.Label (new Rect(10, Screen.height / 2, 250, 25), "Left Trigger - Soft Break");
 	}
