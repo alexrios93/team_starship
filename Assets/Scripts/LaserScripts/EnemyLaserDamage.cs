@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class EnemyLaserDamage : MonoBehaviour {
 
-
     public float damage = 25.0f;
 
     // Update is called once per frame

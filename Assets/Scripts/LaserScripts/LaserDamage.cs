@@ -10,6 +10,7 @@ public class LaserDamage : MonoBehaviour {
 	void OnCollisionEnter (Collision collision) {
         if (collision.gameObject.tag == "Enemy")
         {
+            print("Laser hit a: " + collision.gameObject.name);
             collision.gameObject.SendMessage("TakeDamage", damage, SendMessageOptions.DontRequireReceiver);
             Destroy(gameObject);
         }		
