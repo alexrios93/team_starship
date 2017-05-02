@@ -15,40 +15,45 @@ public class SpawnEnemies : MonoBehaviour {
     private GameObject EnemyTarget;
     private GameObject EnemyTargetAlternative;
 
+    public bool status = false;  // Allows for Pause & Play in ControlLayout
+
     // Use this for initialization
     void Start () {
 		
 	}
-	
-	// Update is called once per frame
-	void Update ()
+
+    // Update is called once per frame
+    void Update()
     {
-        if (SpawnDelay < (Time.time - LastSpawn))
+        if (status)  // Needed for ControlLayout
         {
-            LastSpawn = Time.time;
-            //// SELECT TARGET ////
-            if ((UnityEngine.Random.Range(0, 2) == 0) & (Target != null))
+            if (SpawnDelay < (Time.time - LastSpawn))
             {
-                EnemyTarget = Target;
-                EnemyTargetAlternative = TargetAlternative;
-            }
-            else if (TargetAlternative != null)
-            {
-                EnemyTarget = TargetAlternative;
-                EnemyTargetAlternative = Target;
-            }
-            else
-            {
-                return;
-            }
+                LastSpawn = Time.time;
+                //// SELECT TARGET ////
+                if ((UnityEngine.Random.Range(0, 2) == 0) & (Target != null))
+                {
+                    EnemyTarget = Target;
+                    EnemyTargetAlternative = TargetAlternative;
+                }
+                else if (TargetAlternative != null)
+                {
+                    EnemyTarget = TargetAlternative;
+                    EnemyTargetAlternative = Target;
+                }
+                else
+                {
+                    return;
+                }
 
-            //// SPAWN ENEMY UNIT ////
-            Vector3 RelativePos = Target.transform.position - transform.position;
-            GameObject EnemyShip = Instantiate(Enemy, SpawnLocation.transform.position, Quaternion.LookRotation(RelativePos));
+                //// SPAWN ENEMY UNIT ////
+                Vector3 RelativePos = Target.transform.position - transform.position;
+                GameObject EnemyShip = Instantiate(Enemy, SpawnLocation.transform.position, Quaternion.LookRotation(RelativePos));
 
-            //// DESIGNATE TARGETS ////
-            EnemyShip.GetComponent<SeekAndDestroy>().Target = EnemyTarget;
-            EnemyShip.GetComponent<SeekAndDestroy>().TargetAlternative = EnemyTargetAlternative;
-        }   
+                //// DESIGNATE TARGETS ////
+                EnemyShip.GetComponent<SeekAndDestroy>().Target = EnemyTarget;
+                EnemyShip.GetComponent<SeekAndDestroy>().TargetAlternative = EnemyTargetAlternative;
+            }
+        }
     }
 }

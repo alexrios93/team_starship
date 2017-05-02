@@ -6,10 +6,19 @@ public class ControlLayout : MonoBehaviour {
     public Font retroFont;
     private int size = 11;
 	private bool _run = false;
+
 	private PlayerControl _playerControl;
 
     private GameObject[] Blasters;
     ShootForward[] _shootForward;
+
+    public GameObject Mothership;
+    private SpawnEnemies _spawnEnemies;
+
+    private GameObject Satellite;
+    private SatelliteHealth _satelliteHealth;
+
+    private PlayerHealth _playerHealth;
 
     public AudioClip startSound;
     private AudioSource source;
@@ -24,8 +33,14 @@ public class ControlLayout : MonoBehaviour {
     void Start(){
 		_playerControl = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerControl>();
 
+        _playerHealth = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerHealth>();
+
         Blasters = GameObject.FindGameObjectsWithTag("Blaster");
         _shootForward = new ShootForward[Blasters.Length];
+
+        _spawnEnemies = Mothership.GetComponent<SpawnEnemies>();
+
+        _satelliteHealth = GameObject.FindGameObjectWithTag("Satellite").GetComponent<SatelliteHealth>();
 
         // Enemies = GameObject.FindGameObjectsWithTag("Enemy");
         // _seekAndDestroy = new SeekAndDestroy[Enemies.Length];
@@ -41,6 +56,8 @@ public class ControlLayout : MonoBehaviour {
         retroStyle.font = retroFont;
         retroStyle.fontSize = size;
         retroStyle.normal.textColor = Color.white;
+
+        GUI.skin.font = retroFont;
 
 	    if (_run == false && GUI.Button (new Rect (Screen.width/2-125, Screen.height/2-35, 250, 70), "PLAY")) {
             Play();
@@ -74,7 +91,6 @@ public class ControlLayout : MonoBehaviour {
                     Pause();
                     hasPressed = false;
                 }
-
             }
         }
     }
@@ -82,6 +98,9 @@ public class ControlLayout : MonoBehaviour {
     void Play() 
     {
         _playerControl.status = true;
+        _playerHealth.status = true;
+        _spawnEnemies.status = true;
+        _satelliteHealth.status = true;
         for(int i = 0; i < Blasters.Length; i++)
         {
             _shootForward[i] = Blasters[i].GetComponent<ShootForward>();
@@ -102,6 +121,9 @@ public class ControlLayout : MonoBehaviour {
 
     void Pause(){
         _playerControl.status = false;
+        _playerHealth.status = false;
+        _spawnEnemies.status = false;
+        _satelliteHealth.status = false;
         for (int i = 0; i < Blasters.Length; i++)
         {
             _shootForward[i] = Blasters[i].GetComponent<ShootForward>();

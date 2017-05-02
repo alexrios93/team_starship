@@ -12,6 +12,8 @@ public class PlayerHealth : MonoBehaviour {
     private float maxXValue;
     public int currentHealth;
 
+    public bool status = false;
+
     private int CurrentHealth
     {
         get { return currentHealth; }
@@ -91,32 +93,35 @@ public class PlayerHealth : MonoBehaviour {
 
     void OnTriggerStay(Collider other)
     {
-        if (other.name == "HealthTest")
+        if (status)
         {
-            if(!onCD && currentHealth < maxHealth)
+            if (other.name == "HealthTest")
             {
-                StartCoroutine(CoolDownDmg());
-                CurrentHealth += 1;
-            }            
-            //Debug.Log("Healing");
-        }
-        //if (other.name == "DamageTest")
-        if (other.name == "Nebula")
-        {
-            //float vol = Random.Range(volLowRange, volHighRange);
-            //source.PlayOneShot(dangerSound, vol);
-            source.Play();
-
-            if (!onCD && currentHealth > 0)
-            {
-                StartCoroutine(CoolDownDmg());
-                CurrentHealth -= 1;
+                if (!onCD && currentHealth < maxHealth)
+                {
+                    StartCoroutine(CoolDownDmg());
+                    CurrentHealth += 1;
+                }
+                //Debug.Log("Healing");
             }
-            //Debug.Log("Hurting");
-        }
-        else
-        {
-            source.Stop();
+            //if (other.name == "DamageTest")
+            if (other.name == "Nebula" || other.name == "EnemyLaser")
+            {
+                //float vol = Random.Range(volLowRange, volHighRange);
+                //source.PlayOneShot(dangerSound, vol);
+                source.Play();
+
+                if (!onCD && currentHealth > 0)
+                {
+                    StartCoroutine(CoolDownDmg());
+                    CurrentHealth -= 1;
+                }
+                //Debug.Log("Hurting");
+            }
+            else
+            {
+                source.Stop();
+            }
         }
     }
 

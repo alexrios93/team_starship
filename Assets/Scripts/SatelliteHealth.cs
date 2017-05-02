@@ -13,6 +13,8 @@ public class SatelliteHealth : MonoBehaviour {
     private float maxXValue;
     public float currentHealth;
 
+    public bool status = false;  // Allows for Pause & Play in ControlLayout
+
     private float CurrentHealth
     {
         get { return currentHealth; }
@@ -56,20 +58,23 @@ public class SatelliteHealth : MonoBehaviour {
 
     public void TakeDamage(float damage)
     {
-        if (!onCD && currentHealth > 0)
+        if (status) // Needed for COntrolLayout
         {
-            StartCoroutine(CoolDownDmg());
-            CurrentHealth -= damage;
-        }
+            if (!onCD && currentHealth > 0)
+            {
+                StartCoroutine(CoolDownDmg());
+                CurrentHealth -= damage;
+            }
 
-        //currentHealth -= damage;
-        // if (currentHealth <= 0)
-        // {
-        //print(currentHealthPoint);
-        //     currentHealth = 0;
-        //      Explode();
-        // }
-        //print("satellite hit!  HP Left: " + currentHealthPoint);
+            //currentHealth -= damage;
+            // if (currentHealth <= 0)
+            // {
+            //print(currentHealthPoint);
+            //     currentHealth = 0;
+            //      Explode();
+            // }
+            //print("satellite hit!  HP Left: " + currentHealthPoint);
+        }
     }
 
     private void HandleHealth()
