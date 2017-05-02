@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class SatelliteHealth : MonoBehaviour {
     //public float healthPoint = 100f;
@@ -89,7 +90,9 @@ public class SatelliteHealth : MonoBehaviour {
         }
         if (currentHealth <= 0) // If health reaches 0%
         {
-            Explode();
+            StartCoroutine(DeathCountDown());
+            Explode();            
+            gameObject.transform.localScale = new Vector3(0, 1000, 0);  //Instead of Destroying the Object, it just "disappears"
         }
         else //Less than 50%
         {
@@ -102,7 +105,12 @@ public class SatelliteHealth : MonoBehaviour {
         onCD = true;
         yield return new WaitForSeconds(coolDown);
         onCD = false;
+    }
 
+    IEnumerator DeathCountDown()
+    {
+        yield return new WaitForSeconds(10.0f);
+        SceneManager.LoadScene("DeathScene");
     }
 
     private float MapValues(float x, float inMin, float inMax, float outMin, float outMax)
@@ -115,6 +123,6 @@ public class SatelliteHealth : MonoBehaviour {
     {
         ExplosionFX = Instantiate(Explosion, this.transform.position, this.transform.rotation);
         ExplosionFX.transform.localScale = gameObject.transform.localScale;
-        Destroy(gameObject);
+        //Destroy(gameObject);        
     }
 }

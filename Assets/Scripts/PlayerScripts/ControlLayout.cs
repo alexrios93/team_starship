@@ -15,8 +15,8 @@ public class ControlLayout : MonoBehaviour {
     public GameObject Mothership;
     private SpawnEnemies _spawnEnemies;
 
-    private GameObject Satellite;
-    private SatelliteHealth _satelliteHealth;
+    private GameObject[] Satellites;
+    private SatelliteHealth[] _satelliteHealth;
 
     private PlayerHealth _playerHealth;
 
@@ -40,7 +40,8 @@ public class ControlLayout : MonoBehaviour {
 
         _spawnEnemies = Mothership.GetComponent<SpawnEnemies>();
 
-        _satelliteHealth = GameObject.FindGameObjectWithTag("Satellite").GetComponent<SatelliteHealth>();
+        Satellites = GameObject.FindGameObjectsWithTag("Satellite");
+        _satelliteHealth = new SatelliteHealth[Satellites.Length];
 
         // Enemies = GameObject.FindGameObjectsWithTag("Enemy");
         // _seekAndDestroy = new SeekAndDestroy[Enemies.Length];
@@ -100,8 +101,15 @@ public class ControlLayout : MonoBehaviour {
         _playerControl.status = true;
         _playerHealth.status = true;
         _spawnEnemies.status = true;
-        _satelliteHealth.status = true;
-        for(int i = 0; i < Blasters.Length; i++)
+
+        for (int i = 0; i < Satellites.Length; i++)
+        {
+            _satelliteHealth[i] = Satellites[i].GetComponent<SatelliteHealth>();
+            _satelliteHealth[i].status = true;
+            //Debug.Log(i);
+        }
+
+        for (int i = 0; i < Blasters.Length; i++)
         {
             _shootForward[i] = Blasters[i].GetComponent<ShootForward>();
             _shootForward[i].status = true;
@@ -123,7 +131,12 @@ public class ControlLayout : MonoBehaviour {
         _playerControl.status = false;
         _playerHealth.status = false;
         _spawnEnemies.status = false;
-        _satelliteHealth.status = false;
+        for (int i = 0; i < Satellites.Length; i++)
+        {
+            _satelliteHealth[i] = Satellites[i].GetComponent<SatelliteHealth>();
+            _satelliteHealth[i].status = false;
+            //Debug.Log(i);
+        }
         for (int i = 0; i < Blasters.Length; i++)
         {
             _shootForward[i] = Blasters[i].GetComponent<ShootForward>();

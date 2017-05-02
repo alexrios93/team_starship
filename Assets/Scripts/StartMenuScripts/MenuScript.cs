@@ -116,7 +116,7 @@ public class MenuScript : MonoBehaviour
         // float vol = Random.Range(volLowRange, volHighRange);
         // source.PlayOneShot(selectSound, vol);
 
-        SceneManager.LoadScene("StartScreen");
+        SceneManager.LoadScene("StartMenu");
     }
 
     public void Update()

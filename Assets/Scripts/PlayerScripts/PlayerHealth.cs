@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 //using static System.Net.Mime.MediaTypeNames;
 
@@ -76,6 +77,7 @@ public class PlayerHealth : MonoBehaviour {
         if (currentHealth <= 0) // If health reaches 0%
         {
             Explode();
+            StartCoroutine(DeathCountDown());
         }
         else //Less than 50%
         {
@@ -88,7 +90,12 @@ public class PlayerHealth : MonoBehaviour {
         onCD = true;
         yield return new WaitForSeconds(coolDown);
         onCD = false;
+    }
 
+    IEnumerator DeathCountDown()
+    {
+        yield return new WaitForSeconds(2.5f);
+        SceneManager.LoadScene("DeathScene");
     }
 
     void OnTriggerStay(Collider other)
@@ -133,7 +140,7 @@ public class PlayerHealth : MonoBehaviour {
     void Explode()
     {
         ExplosionFX = Instantiate(Explosion, this.transform.position, this.transform.rotation);
-        ExplosionFX.transform.localScale = gameObject.transform.localScale;
-        Destroy(gameObject);
+        ExplosionFX.transform.localScale = gameObject.transform.localScale;        
+        //Destroy(gameObject);
     }
 }
