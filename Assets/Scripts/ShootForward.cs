@@ -12,8 +12,8 @@ public class ShootForward : MonoBehaviour {
 
     public AudioClip laserSound;
     private AudioSource source;
-    private float volLowRange = .5f;
-    private float volHighRange = 1.0f;
+    private float volLowRange = .2f;
+    private float volHighRange = .3f;
 
     // Use this for initialization
     void Start()

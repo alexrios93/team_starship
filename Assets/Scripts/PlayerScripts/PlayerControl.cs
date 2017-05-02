@@ -33,8 +33,8 @@ public class PlayerControl : MonoBehaviour
     public AudioClip boostSound;
     public AudioClip idleSound;
     private AudioSource source;
-    private float volLowRange = .5f;
-    private float volHighRange = 1.0f;
+    private float volLowRange = .4f;
+    private float volHighRange = .5f;
     private bool hasPlayed = false;
 
     void Start(){        
