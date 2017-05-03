@@ -43,6 +43,9 @@ public class SatelliteHealth : MonoBehaviour {
     private GameObject ExplosionFX;
     //private GameObject[] _enemy;
 
+    public GameObject Camera;   //Use camera as dummy for SatelliteDown
+    private SatelliteDown _satelliteDown;
+
     // Use this for initialization
     void Start()
     {
@@ -55,6 +58,7 @@ public class SatelliteHealth : MonoBehaviour {
 
         currentHealth = maxHealth;
 
+        _satelliteDown = Camera.GetComponent<SatelliteDown>();
     }
 
     public void TakeDamage(float damage)
@@ -90,9 +94,9 @@ public class SatelliteHealth : MonoBehaviour {
         }
         if (currentHealth <= 0) // If health reaches 0%
         {
-            StartCoroutine(DeathCountDown());
-            Explode();            
-            gameObject.transform.localScale = new Vector3(0, 1000, 0);  //Instead of Destroying the Object, it just "disappears"
+            //StartCoroutine(DeathCountDown()); // Taken to SatelliteDown script
+            _satelliteDown.satelliteDown += 1;
+            Explode();   
         }
         else //Less than 50%
         {
@@ -107,9 +111,9 @@ public class SatelliteHealth : MonoBehaviour {
         onCD = false;
     }
 
-    IEnumerator DeathCountDown()
+    IEnumerator DeathSceneCountDown()
     {
-        yield return new WaitForSeconds(10.0f);
+        yield return new WaitForSeconds(2.5f);
         SceneManager.LoadScene("DeathScene");
     }
 
@@ -122,7 +126,9 @@ public class SatelliteHealth : MonoBehaviour {
     void Explode()
     {
         ExplosionFX = Instantiate(Explosion, this.transform.position, this.transform.rotation);
-        ExplosionFX.transform.localScale = gameObject.transform.localScale;
-        //Destroy(gameObject);        
+        //ExplosionFX.transform.localScale = gameObject.transform.localScale;
+        ExplosionFX.transform.localScale = new Vector3(10, 10, 10);
+        //Destroy(gameObject); 
+        gameObject.transform.localScale = new Vector3(0, 0, 0);  //Instead of Destroying the Object, it just "disappears"       
     }
 }

@@ -2,6 +2,7 @@
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using UnityEngine.EventSystems;
+using System.Collections;
 
 public class MenuScript : MonoBehaviour
 {
@@ -22,6 +23,9 @@ public class MenuScript : MonoBehaviour
     private float volHighRange = 1.0f;
     private bool hasPlayed = false;
 
+    public GameObject Camera;
+    private FadeScreen  _fadeScreen;
+
     // Use this for initialization
     void Start()
     {
@@ -38,6 +42,8 @@ public class MenuScript : MonoBehaviour
         yesText.interactable = false;
         noText.interactable = false;
         continueText.interactable = false;
+
+        _fadeScreen = Camera.GetComponent<FadeScreen>();
     }
 
     void Awake()
@@ -105,17 +111,33 @@ public class MenuScript : MonoBehaviour
 
     public void StartScene()
     {
+        _fadeScreen.fadeOut = true;
+
         float vol = Random.Range(volLowRange, volHighRange);
         source.PlayOneShot(selectSound, vol);
 
-        SceneManager.LoadScene("Main");
+        StartCoroutine(MainSceneCountDown());
     }
 
     public void ExitGame()
     {
-        // float vol = Random.Range(volLowRange, volHighRange);
-        // source.PlayOneShot(selectSound, vol);
+        _fadeScreen.fadeOut = true;
 
+        float vol = Random.Range(volLowRange, volHighRange);
+        source.PlayOneShot(selectSound, vol);
+
+        StartCoroutine(MenuSceneCountDown());
+    }
+
+    IEnumerator MainSceneCountDown()
+    {
+        yield return new WaitForSeconds(2.5f);
+        SceneManager.LoadScene("Main");
+    }
+
+    IEnumerator MenuSceneCountDown()
+    {
+        yield return new WaitForSeconds(2.5f);
         SceneManager.LoadScene("StartMenu");
     }
 

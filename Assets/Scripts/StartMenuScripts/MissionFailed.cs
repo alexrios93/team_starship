@@ -14,11 +14,16 @@ public class MissionFailed : MonoBehaviour {
     private float volHighRange = 1.0f;
     private bool hasPlayed = false;
 
+    public GameObject Camera;
+    private FadeScreen _fadeScreen;
+
     // Use this for initialization
     void Start()
     {
         continueText.interactable = true;
         continueText.Select();
+
+        _fadeScreen = Camera.GetComponent<FadeScreen>();
     }
 
     void Awake()
@@ -28,9 +33,17 @@ public class MissionFailed : MonoBehaviour {
 
     public void ContinuePress()
     {
+        _fadeScreen.fadeOut = true;
+
         float vol = Random.Range(volLowRange, volHighRange);
         source.PlayOneShot(selectSound, vol);
 
+        StartCoroutine(MenuSceneCountDown());
+    }
+
+    IEnumerator MenuSceneCountDown()
+    {
+        yield return new WaitForSeconds(2.5f);
         SceneManager.LoadScene("StartMenu");
     }
 

@@ -46,6 +46,9 @@ public class PlayerHealth : MonoBehaviour {
     private float volLowRange = .5f;
     private float volHighRange = 1.0f;
 
+    public GameObject Camera;
+    private FadeScreen _fadeScreen;
+
     // Use this for initialization
     void Start () {
         cachedY = healthTransform.position.y;
@@ -53,6 +56,8 @@ public class PlayerHealth : MonoBehaviour {
         minXValue = healthTransform.position.x - (healthTransform.rect.width * 2);
         currentHealth = maxHealth;
         onCD = false;
+
+        _fadeScreen = Camera.GetComponent<FadeScreen>();
     }
 	
 	// Update is called once per frame
@@ -77,7 +82,8 @@ public class PlayerHealth : MonoBehaviour {
         if (currentHealth <= 0) // If health reaches 0%
         {
             Explode();
-            StartCoroutine(DeathCountDown());
+            _fadeScreen.fadeOut = true;
+            StartCoroutine(DeathSceneCountDown());
         }
         else //Less than 50%
         {
@@ -92,7 +98,7 @@ public class PlayerHealth : MonoBehaviour {
         onCD = false;
     }
 
-    IEnumerator DeathCountDown()
+    IEnumerator DeathSceneCountDown()
     {
         yield return new WaitForSeconds(2.5f);
         SceneManager.LoadScene("DeathScene");
@@ -140,7 +146,8 @@ public class PlayerHealth : MonoBehaviour {
     void Explode()
     {
         ExplosionFX = Instantiate(Explosion, this.transform.position, this.transform.rotation);
-        ExplosionFX.transform.localScale = gameObject.transform.localScale;        
+        ExplosionFX.transform.localScale = gameObject.transform.localScale;
         //Destroy(gameObject);
+        gameObject.transform.localScale = new Vector3(0, 0, 0);
     }
 }
