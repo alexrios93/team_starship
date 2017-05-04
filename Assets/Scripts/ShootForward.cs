@@ -15,10 +15,12 @@ public class ShootForward : MonoBehaviour {
     private float volLowRange = .2f;
     private float volHighRange = .3f;
 
+    private GameObject _player;
+
     // Use this for initialization
     void Start()
     {
-
+        _player = GameObject.FindGameObjectWithTag("Player");
     }
 
     void Awake()
@@ -39,6 +41,8 @@ public class ShootForward : MonoBehaviour {
 
                 Rigidbody newProjectile = Instantiate(projectile, transform.position, transform.rotation) as Rigidbody;
                 newProjectile.AddForce(transform.forward * velocity, ForceMode.VelocityChange);
+
+                Physics.IgnoreCollision(newProjectile.GetComponent<Collider>(), _player.GetComponent<Collider>());
             }
             //if (Input.GetButtonDown("B Button"))
             //{

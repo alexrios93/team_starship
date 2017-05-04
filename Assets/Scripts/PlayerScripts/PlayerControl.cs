@@ -53,6 +53,16 @@ public class PlayerControl : MonoBehaviour
         source = gameObject.AddComponent<AudioSource>();
     }
 
+    void FixedUpdate()
+    {
+        //Return to Original Z Rotation
+        Vector3 newRotationEuler = transform.rotation.eulerAngles;
+        newRotationEuler.z = 0;
+        Quaternion newQuat = Quaternion.identity;
+        newQuat.eulerAngles = newRotationEuler;
+        transform.rotation = Quaternion.RotateTowards(transform.rotation, newQuat, Time.deltaTime * 300);   
+    }
+
     void LateUpdate()
     {
 		//Coordinates pause - play with manager object
@@ -60,13 +70,6 @@ public class PlayerControl : MonoBehaviour
             //Rotation Manager
             if (!inBarrelRoll)
             {
-                //Return to Original Z Rotation
-                Vector3 newRotationEuler = transform.rotation.eulerAngles;
-                newRotationEuler.z = 0;
-                Quaternion newQuat = Quaternion.identity;
-                newQuat.eulerAngles = newRotationEuler;
-                //transform.rotation = newQuat;
-
                 if ((Input.GetButton("Left Bumper") && Input.GetButton("Right Bumper")) == false)
                 {
                     TriggerDown = false;
@@ -82,7 +85,6 @@ public class PlayerControl : MonoBehaviour
                         StartCoroutine("BarrelRollLeft");
                     }
                     time = 0.0f;
-                    transform.rotation = newQuat;
                 }
 
                 //Rotate Right
@@ -95,7 +97,6 @@ public class PlayerControl : MonoBehaviour
                         StartCoroutine("BarrelRollRight");
                     }
                     time = 0.0f;
-                    transform.rotation = newQuat;
                 }                
             }                  
   
@@ -116,14 +117,9 @@ public class PlayerControl : MonoBehaviour
 
             //Max Speed
             if (Input.GetAxis("Right Trigger") < 0 || Input.GetButton("Right Thumb") || Input.GetKey(KeyCode.Mouse1))
-            {
-                //  currrentSpeed = maxSpeed;
-                //  MaxBoosters(0.65f);
+            {                
                 if (!onCD && currentBoost > 0)
                 {
-                    //float vol = Random.Range(volLowRange, volHighRange);
-                    //source.PlayOneShot(boostSound, vol);
-
                     currrentSpeed = maxSpeed;
                     for (int i = 0; i < boostersT.Length; ++i)
                     {
@@ -197,10 +193,16 @@ public class PlayerControl : MonoBehaviour
             float horizontal = Input.GetAxis("Horizontal");
             float vertical = Input.GetAxis("Vertical");
 
-            transform.Rotate(new Vector3(-vertical, horizontal, 0) * movementSpeed);
-            transform.Translate(Vector3.forward * Time.deltaTime * currrentSpeed);
-            transform.Translate(Vector3.forward * Time.deltaTime * currrentSpeed);
-
+            // Without Physic Collisions
+            //transform.Rotate(new Vector3(-vertical, horizontal, 0) * movementSpeed);
+            //transform.Translate(Vector3.forward * Time.deltaTime * currrentSpeed);
+            //transform.Translate(Vector3.forward * Time.deltaTime * currrentSpeed);    
+            
+            //  With Physics Collisions
+            Quaternion deltaRotation = Quaternion.AngleAxis(horizontal, transform.up) * Quaternion.AngleAxis(-vertical, transform.right);
+            gameObject.GetComponent<Rigidbody>().MoveRotation(deltaRotation * transform.rotation);
+            //gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
+            gameObject.GetComponent<Rigidbody>().MovePosition(transform.position + transform.forward * Time.deltaTime * currrentSpeed * 2.0f);
         }
     }
 
