@@ -43,6 +43,7 @@ public class ControlLayout : MonoBehaviour {
         Satellites = GameObject.FindGameObjectsWithTag("Satellite");
         _satelliteHealth = new SatelliteHealth[Satellites.Length];
 
+        Play();
         // Enemies = GameObject.FindGameObjectsWithTag("Enemy");
         // _seekAndDestroy = new SeekAndDestroy[Enemies.Length];
     }
@@ -62,7 +63,10 @@ public class ControlLayout : MonoBehaviour {
 
 	    if (_run == false && GUI.Button (new Rect (Screen.width/2-125, Screen.height/2-35, 250, 70), "PLAY")) {
             Play();
-	    } else if (_run == true && GUI.Button (new Rect (10, Screen.height / 2 + 25, 100, 50), "PAUSE")) {
+
+            float vol = Random.Range(volLowRange, volHighRange);
+            source.PlayOneShot(startSound, vol);
+        } else if (_run == true && GUI.Button (new Rect (10, Screen.height / 2 + 25, 100, 50), "PAUSE")) {
             Pause();
 	    }
 
@@ -84,6 +88,9 @@ public class ControlLayout : MonoBehaviour {
             {
                 Play();
                 hasPressed = true;
+
+                float vol = Random.Range(volLowRange, volHighRange);
+                source.PlayOneShot(startSound, vol);
             }
             else
             {
@@ -121,10 +128,7 @@ public class ControlLayout : MonoBehaviour {
         //     _seekAndDestroy[i].status = true;
         //     Debug.Log(i);
         // }
-        _run = true;
-
-        float vol = Random.Range(volLowRange, volHighRange);
-        source.PlayOneShot(startSound, vol);
+        _run = true; 
     }
 
     void Pause(){
@@ -148,6 +152,9 @@ public class ControlLayout : MonoBehaviour {
         //     _seekAndDestroy[i].status = false;
         // }
         _run = false;
+
+        float vol = Random.Range(volLowRange, volHighRange);
+        source.PlayOneShot(startSound, vol);
     }
 }
 

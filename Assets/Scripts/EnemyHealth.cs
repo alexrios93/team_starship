@@ -28,7 +28,7 @@ public class EnemyHealth : MonoBehaviour {
 	// Update is called once per frame
 	void Explode () {
         ExplosionFX = Instantiate(Explosion, this.transform.position, this.transform.rotation);
-        ExplosionFX.transform.localScale = gameObject.transform.localScale;
+        //ExplosionFX.transform.localScale = gameObject.transform.localScale;
         Destroy(gameObject);
 	}
 }

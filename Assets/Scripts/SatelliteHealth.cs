@@ -127,7 +127,6 @@ public class SatelliteHealth : MonoBehaviour {
     {
         ExplosionFX = Instantiate(Explosion, this.transform.position, this.transform.rotation);
         //ExplosionFX.transform.localScale = gameObject.transform.localScale;
-        ExplosionFX.transform.localScale = new Vector3(10, 10, 10);
         //Destroy(gameObject); 
         gameObject.transform.localScale = new Vector3(0, 0, 0);  //Instead of Destroying the Object, it just "disappears"       
     }
