@@ -21,6 +21,11 @@ public class SpawnEnemies : MonoBehaviour {
     private float PortalCloseDelay = 30.0f;
     private float LastPortalClose = -15.0f;
 
+    private float SmallDelay = 0.5f;
+    private float LastSmallDelay = -15.0f;
+
+    private float LastWaveStart = 0.0f; 
+
     private GameObject EnemyTarget;
     private GameObject EnemyTargetAlternative;
 
@@ -28,6 +33,7 @@ public class SpawnEnemies : MonoBehaviour {
 
     public int WaveSize = 5;
     private int Count = 0;
+    
 
     // Use this for initialization
     void Start ()
@@ -47,7 +53,22 @@ public class SpawnEnemies : MonoBehaviour {
 
             if (SpawnDelay < (Time.time - LastSpawn))
             {
-                SpawnEnemyShips();
+                if (Count == 0)
+                {
+                    LastWaveStart = Time.time;
+                }
+
+                if ( (SmallDelay < (Time.time - LastSmallDelay)) & (Count < WaveSize) )
+                {
+                    LastSmallDelay = Time.time;
+                    SpawnEnemyShips();
+                }
+
+                if (Count == WaveSize)
+                {
+                    LastSpawn = LastWaveStart;
+                    Count = 0;
+                }
             }
 
             if (PortalCloseDelay < (Time.time - LastPortalClose))
@@ -65,37 +86,32 @@ public class SpawnEnemies : MonoBehaviour {
 
     void SpawnEnemyShips()
     {
-        while (Count < WaveSize)
-        {
-            LastSpawn = Time.time;
-            //// SELECT TARGET ////
-            if ((UnityEngine.Random.Range(0, 2) == 0) & (Target != null))
-            {
-                EnemyTarget = Target;
-                EnemyTargetAlternative = TargetAlternative;
-            }
-            else if (TargetAlternative != null)
-            {
-                EnemyTarget = TargetAlternative;
-                EnemyTargetAlternative = Target;
-            }
-            else
-            {
-                return;
-            }
 
-            //// SPAWN ENEMY UNIT ////
-            Vector3 RelativePos = Target.transform.position - transform.position;
-            GameObject EnemyShip = Instantiate(Enemy, SpawnLocation.transform.position, Quaternion.LookRotation(RelativePos));
+                //// SELECT TARGET ////
+                if ((UnityEngine.Random.Range(0, 2) == 0) & (Target != null))
+                {
+                    EnemyTarget = Target;
+                    EnemyTargetAlternative = TargetAlternative;
+                }
+                else if (TargetAlternative != null)
+                {
+                    EnemyTarget = TargetAlternative;
+                    EnemyTargetAlternative = Target;
+                }
+                else
+                {
+                    return;
+                }
 
-            //// DESIGNATE TARGETS ////
-            EnemyShip.GetComponent<SeekAndDestroy>().Target = EnemyTarget;
-            EnemyShip.GetComponent<SeekAndDestroy>().TargetAlternative = EnemyTargetAlternative;
+                //// SPAWN ENEMY UNIT ////
+                Vector3 RelativePos = Target.transform.position - transform.position;
+                GameObject EnemyShip = Instantiate(Enemy, SpawnLocation.transform.position, Quaternion.LookRotation(RelativePos));
 
-            Count++;
-        }
+                //// DESIGNATE TARGETS ////
+                EnemyShip.GetComponent<SeekAndDestroy>().Target = EnemyTarget;
+                EnemyShip.GetComponent<SeekAndDestroy>().TargetAlternative = EnemyTargetAlternative;
 
-        Count = 0;
+                Count++;
     }
     void ClosePortal()
     {
