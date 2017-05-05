@@ -26,6 +26,9 @@ public class SpawnEnemies : MonoBehaviour {
 
     public bool status = false;  // Allows for Pause & Play in ControlLayout
 
+    public int WaveSize = 5;
+    private int Count = 0;
+
     // Use this for initialization
     void Start ()
     {
@@ -62,32 +65,38 @@ public class SpawnEnemies : MonoBehaviour {
 
     void SpawnEnemyShips()
     {
-        LastSpawn = Time.time;
-        //// SELECT TARGET ////
-        if ((UnityEngine.Random.Range(0, 2) == 0) & (Target != null))
+        while (Count < WaveSize)
         {
-            EnemyTarget = Target;
-            EnemyTargetAlternative = TargetAlternative;
-        }
-        else if (TargetAlternative != null)
-        {
-            EnemyTarget = TargetAlternative;
-            EnemyTargetAlternative = Target;
-        }
-        else
-        {
-            return;
+            LastSpawn = Time.time;
+            //// SELECT TARGET ////
+            if ((UnityEngine.Random.Range(0, 2) == 0) & (Target != null))
+            {
+                EnemyTarget = Target;
+                EnemyTargetAlternative = TargetAlternative;
+            }
+            else if (TargetAlternative != null)
+            {
+                EnemyTarget = TargetAlternative;
+                EnemyTargetAlternative = Target;
+            }
+            else
+            {
+                return;
+            }
+
+            //// SPAWN ENEMY UNIT ////
+            Vector3 RelativePos = Target.transform.position - transform.position;
+            GameObject EnemyShip = Instantiate(Enemy, SpawnLocation.transform.position, Quaternion.LookRotation(RelativePos));
+
+            //// DESIGNATE TARGETS ////
+            EnemyShip.GetComponent<SeekAndDestroy>().Target = EnemyTarget;
+            EnemyShip.GetComponent<SeekAndDestroy>().TargetAlternative = EnemyTargetAlternative;
+
+            Count++;
         }
 
-        //// SPAWN ENEMY UNIT ////
-        Vector3 RelativePos = Target.transform.position - transform.position;
-        GameObject EnemyShip = Instantiate(Enemy, SpawnLocation.transform.position, Quaternion.LookRotation(RelativePos));
-
-        //// DESIGNATE TARGETS ////
-        EnemyShip.GetComponent<SeekAndDestroy>().Target = EnemyTarget;
-        EnemyShip.GetComponent<SeekAndDestroy>().TargetAlternative = EnemyTargetAlternative;
+        Count = 0;
     }
-
     void ClosePortal()
     {
         LastPortalClose = Time.time;
