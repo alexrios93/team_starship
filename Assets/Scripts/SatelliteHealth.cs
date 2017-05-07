@@ -44,7 +44,7 @@ public class SatelliteHealth : MonoBehaviour {
     //private GameObject[] _enemy;
 
     public GameObject Camera;   //Use camera as dummy for SatelliteDown
-    private SatelliteDown _satelliteDown;
+    private VictoryOrDeath _satelliteDown;
 
     // Use this for initialization
     void Start()
@@ -58,7 +58,7 @@ public class SatelliteHealth : MonoBehaviour {
 
         currentHealth = maxHealth;
 
-        _satelliteDown = Camera.GetComponent<SatelliteDown>();
+        _satelliteDown = Camera.GetComponent<VictoryOrDeath>();
     }
 
     public void TakeDamage(float damage)

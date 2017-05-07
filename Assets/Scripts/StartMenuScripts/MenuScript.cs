@@ -53,7 +53,7 @@ public class MenuScript : MonoBehaviour
 
     public void ExitPress()
     {
-        StartMenu.enabled = true;
+        StartMenu.enabled = false;
         QuitMenu.enabled = true;
         InfoMenu.enabled = false;
 
@@ -89,7 +89,7 @@ public class MenuScript : MonoBehaviour
 
     public void PlayPress() //Loads up the InfoMenu
     {
-        StartMenu.enabled = true;
+        StartMenu.enabled = false;
         QuitMenu.enabled = false;
         InfoMenu.enabled = true;
 

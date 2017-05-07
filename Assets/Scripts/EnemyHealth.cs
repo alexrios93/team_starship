@@ -9,11 +9,17 @@ public class EnemyHealth : MonoBehaviour {
     private GameObject ExplosionFX;
     //private GameObject[] _enemy;
 
+    private GameObject Camera; // Needed to add enemies to the list
+    private VictoryOrDeath _enemyList;
+
     // Use this for initialization
     void Start () {
         //_enemy = GameObject.FindGameObjectsWithTag("Enemy");
         currentHealthPoint = healthPoint;
-	}
+
+        Camera = GameObject.FindGameObjectWithTag("MainCamera");
+        _enemyList = Camera.GetComponent<VictoryOrDeath>();
+    }
 
     public void TakeDamage(float damage)
     {
@@ -29,6 +35,7 @@ public class EnemyHealth : MonoBehaviour {
 	void Explode () {
         ExplosionFX = Instantiate(Explosion, this.transform.position, this.transform.rotation);
         //ExplosionFX.transform.localScale = gameObject.transform.localScale;
+        _enemyList.enemyList.Remove(1);    // Removes Enemy from the List
         Destroy(gameObject);
 	}
 }

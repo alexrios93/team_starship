@@ -10,7 +10,8 @@ public class SpawnEnemies : MonoBehaviour {
     public GameObject SpawnLocation;
     public GameObject Portal;
 
-    
+    private GameObject Camera; // Needed to add enemies to the list
+    private VictoryOrDeath _enemyList;
 
     private float PortalOpenDelay = 30.0f;
     private float LastPortalOpen = -25.0f;
@@ -39,6 +40,9 @@ public class SpawnEnemies : MonoBehaviour {
     void Start ()
     {
         Portal.GetComponent<ParticleSystem>().Stop();
+
+        Camera = GameObject.FindGameObjectWithTag("MainCamera");
+        _enemyList = Camera.GetComponent<VictoryOrDeath>();
     }
 
     // Update is called once per frame
@@ -106,9 +110,10 @@ public class SpawnEnemies : MonoBehaviour {
                 //// SPAWN ENEMY UNIT ////
                 Vector3 RelativePos = Target.transform.position - transform.position;
                 GameObject EnemyShip = Instantiate(Enemy, SpawnLocation.transform.position, Quaternion.LookRotation(RelativePos));
+                _enemyList.enemyList.Add(1); // Adds New Enemy to the List                
 
-                //// DESIGNATE TARGETS ////
-                EnemyShip.GetComponent<SeekAndDestroy>().Target = EnemyTarget;
+        //// DESIGNATE TARGETS ////
+        EnemyShip.GetComponent<SeekAndDestroy>().Target = EnemyTarget;
                 EnemyShip.GetComponent<SeekAndDestroy>().TargetAlternative = EnemyTargetAlternative;
 
                 Count++;
