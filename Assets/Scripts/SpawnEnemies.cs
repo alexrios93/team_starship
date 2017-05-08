@@ -112,8 +112,8 @@ public class SpawnEnemies : MonoBehaviour {
                 GameObject EnemyShip = Instantiate(Enemy, SpawnLocation.transform.position, Quaternion.LookRotation(RelativePos));
                 _enemyList.enemyList.Add(1); // Adds New Enemy to the List                
 
-        //// DESIGNATE TARGETS ////
-        EnemyShip.GetComponent<SeekAndDestroy>().Target = EnemyTarget;
+                //// DESIGNATE TARGETS ////
+                EnemyShip.GetComponent<SeekAndDestroy>().Target = EnemyTarget;
                 EnemyShip.GetComponent<SeekAndDestroy>().TargetAlternative = EnemyTargetAlternative;
 
                 Count++;

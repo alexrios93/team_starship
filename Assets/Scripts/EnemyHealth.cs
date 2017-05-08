@@ -6,6 +6,7 @@ public class EnemyHealth : MonoBehaviour {
     public float healthPoint = 100f;
     public float currentHealthPoint;
     public GameObject Explosion;
+    public GameObject ScorePoints;
     private GameObject ExplosionFX;
     //private GameObject[] _enemy;
 
@@ -27,7 +28,10 @@ public class EnemyHealth : MonoBehaviour {
         if(currentHealthPoint <= 0)
         {
             currentHealthPoint = 0;
+            GameObject SPoints = Instantiate(ScorePoints, transform.position, Quaternion.LookRotation(Camera.transform.position));
+            //Instantiate(ScorePoints, transform);
             Explode();
+
         }
     }
 	
