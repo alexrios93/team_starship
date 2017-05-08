@@ -40,6 +40,10 @@ public class MothershipHealth : MonoBehaviour {
     private GameObject ExplosionFX;
     //private GameObject[] _enemy;
 
+    public GameObject ScorePoints;
+    public int _scoreValue = 50;
+    private GameObject Camera;
+
     // Use this for initialization
     void Start()
     {
@@ -51,7 +55,8 @@ public class MothershipHealth : MonoBehaviour {
         onCD = false;
 
         currentHealth = maxHealth;
-        
+
+        Camera = GameObject.FindGameObjectWithTag("MainCamera");
     }
 
     public void TakeDamage(float damage)
@@ -83,6 +88,10 @@ public class MothershipHealth : MonoBehaviour {
         }
         if (currentHealth <= 0) // If health reaches 0%
         {
+            Points.ScoreOperator = "+";
+            Points.ScoreValue = _scoreValue;
+            GameObject SPoints = Instantiate(ScorePoints, transform.position, Quaternion.LookRotation(Camera.transform.position));
+            ScoreManager.playerScore += _scoreValue;
             Explode();
         }
         else //Less than 50%

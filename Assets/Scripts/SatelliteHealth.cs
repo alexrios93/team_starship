@@ -46,6 +46,9 @@ public class SatelliteHealth : MonoBehaviour {
     public GameObject Camera;   //Use camera as dummy for SatelliteDown
     private VictoryOrDeath _satelliteDown;
 
+    public GameObject ScorePoints;
+    public int _scoreValue = 50;
+
     // Use this for initialization
     void Start()
     {
@@ -96,6 +99,10 @@ public class SatelliteHealth : MonoBehaviour {
         {
             //StartCoroutine(DeathCountDown()); // Taken to SatelliteDown script
             _satelliteDown.satelliteDown += 1;
+            Points.ScoreOperator = "-";
+            Points.ScoreValue = _scoreValue;
+            GameObject SPoints = Instantiate(ScorePoints, transform.position, Quaternion.LookRotation(Camera.transform.position));
+            ScoreManager.playerScore -= -_scoreValue;   // Deduct Value from ScoreManager
             Explode();   
         }
         else //Less than 50%

@@ -13,6 +13,8 @@ public class EnemyHealth : MonoBehaviour {
     private GameObject Camera; // Needed to add enemies to the list
     private VictoryOrDeath _enemyList;
 
+    public int _scoreValue = 50;
+
     // Use this for initialization
     void Start () {
         //_enemy = GameObject.FindGameObjectsWithTag("Enemy");
@@ -28,7 +30,10 @@ public class EnemyHealth : MonoBehaviour {
         if(currentHealthPoint <= 0)
         {
             currentHealthPoint = 0;
+            Points.ScoreOperator = "+";
+            Points.ScoreValue = _scoreValue;
             GameObject SPoints = Instantiate(ScorePoints, transform.position, Quaternion.LookRotation(Camera.transform.position));
+            ScoreManager.playerScore += _scoreValue; // Add value to ScoreManager
             //Instantiate(ScorePoints, transform);
             Explode();
 
