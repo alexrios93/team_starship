@@ -49,6 +49,9 @@ public class PlayerHealth : MonoBehaviour {
     public GameObject Camera;
     private FadeScreen _fadeScreen;
 
+    public GameObject ScorePoints;
+    public int _scoreValue = 50;
+
     // Use this for initialization
     void Start () {
         cachedY = healthTransform.position.y;
@@ -81,6 +84,11 @@ public class PlayerHealth : MonoBehaviour {
         }
         if (currentHealth <= 0) // If health reaches 0%
         {
+            Points.ScoreOperator = "-";
+            Points.ScoreValue = _scoreValue;
+            GameObject SPoints = Instantiate(ScorePoints, transform.position + transform.forward * 35, Quaternion.LookRotation(Camera.transform.position));
+            ScoreManager.playerScore -= _scoreValue;   // Deduct Value from ScoreManager
+
             Explode();
             _fadeScreen.fadeOut = true;
             StartCoroutine(DeathSceneCountDown());
@@ -121,22 +129,18 @@ public class PlayerHealth : MonoBehaviour {
             if (other.name == "Nebula" || other.name == "EnemyLaser")
             {
                 //float vol = Random.Range(volLowRange, volHighRange);
-                //source.PlayOneShot(dangerSound, vol);
-                source.Play();
+                //source.PlayOneShot(dangerSound, vol);                
 
                 if (!onCD && currentHealth > 0)
                 {
                     StartCoroutine(CoolDownDmg());
                     CurrentHealth -= 1;
+                    ScoreManager.playerScore -= 1;  //Taking Damage Deducts Points
                 }
                 //Debug.Log("Hurting");
             }
-            else
-            {
-                source.Stop();
-            }
         }
-    }
+    }     
 
     private float MapValues(float x, float inMin, float inMax, float outMin, float outMax)
     {

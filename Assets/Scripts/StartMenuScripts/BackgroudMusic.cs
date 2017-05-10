@@ -64,9 +64,10 @@ public class BackgroudMusic : MonoBehaviour
         retroStyle.font = retroFont;
         retroStyle.fontSize = size;
         retroStyle.normal.textColor = Color.white;
+        retroStyle.alignment = TextAnchor.LowerLeft;
 
         // Display Song Name
-        GUI.Label(new Rect(10, Screen.height / 2 + 300, 500, 50), musicName, retroStyle);
+        GUI.Label(new Rect(10, Screen.height - 65, Screen.width, 50), musicName, retroStyle);
         //GUI.Label(new Rect(10, Screen.height / 2 + 300, 500, 50), BackgroudMusic.name, retroStyle);   ///Original
     }
 

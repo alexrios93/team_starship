@@ -97,12 +97,12 @@ public class SatelliteHealth : MonoBehaviour {
         }
         if (currentHealth <= 0) // If health reaches 0%
         {
-            //StartCoroutine(DeathCountDown()); // Taken to SatelliteDown script
+            //StartCoroutine(DeathCountDown()); // Taken to VictoryOrDeath script
             _satelliteDown.satelliteDown += 1;
             Points.ScoreOperator = "-";
             Points.ScoreValue = _scoreValue;
             GameObject SPoints = Instantiate(ScorePoints, transform.position, Quaternion.LookRotation(Camera.transform.position));
-            ScoreManager.playerScore -= -_scoreValue;   // Deduct Value from ScoreManager
+            ScoreManager.playerScore -= _scoreValue;   // Deduct Value from ScoreManager
             Explode();   
         }
         else //Less than 50%
