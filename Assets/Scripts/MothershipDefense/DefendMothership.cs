@@ -11,7 +11,7 @@ public class DefendMothership : MonoBehaviour {
     private GameObject _player;
     public Rigidbody projectile;
     private bool fire = false;
-    private float velocity = 100.0f;
+    private float velocity = 1000.0f;
 
     private float LastLaserFire = -2.5f;
     private float LaserCoolDown = 2.5f;

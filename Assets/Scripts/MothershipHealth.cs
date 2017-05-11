@@ -13,6 +13,8 @@ public class MothershipHealth : MonoBehaviour {
     private float maxXValue;
     public float currentHealth;
 
+    public static bool MothershipBelowHalf = false;
+
     private float CurrentHealth
     {
         get { return currentHealth; }
@@ -51,7 +53,7 @@ public class MothershipHealth : MonoBehaviour {
     public GameObject Defender;
     private GameObject _player;
     private VictoryOrDeath _enemyList;
-
+    
     // Use this for initialization
     void Start()
     {
@@ -77,7 +79,7 @@ public class MothershipHealth : MonoBehaviour {
         {
             StartCoroutine(CoolDownDmg());
             CurrentHealth -= damage;
-            MotherShipDefense();
+            //MotherShipDefense();
         }
 
         //currentHealth -= damage;
@@ -95,10 +97,6 @@ public class MothershipHealth : MonoBehaviour {
         float currentXValue = MapValues(currentHealth, 0, maxHealth, minXValue, maxXValue);
         mothershipHealth.position = new Vector3(currentXValue, cachedY);
 
-        if (currentHealth > maxHealth / 2)  // Greater than 50%
-        {
-            visualHealth.GetComponent<Image>().color = new Color32((byte)MapValues(currentHealth, maxHealth / 2, maxHealth, 109, 109), 109, 109, 255);
-        }
         if (currentHealth <= 0) // If health reaches 0%
         {
             Points.ScoreOperator = "+";
@@ -107,9 +105,15 @@ public class MothershipHealth : MonoBehaviour {
             ScoreManager.playerScore += _scoreValue;
             Explode();
         }
+
+        if (currentHealth > maxHealth / 2)  // Greater than 50%
+        {
+            visualHealth.GetComponent<Image>().color = new Color32((byte)MapValues(currentHealth, maxHealth / 2, maxHealth, 109, 109), 109, 109, 255);
+        }
         else //Less than 50%
         {
             visualHealth.GetComponent<Image>().color = new Color32(109, (byte)MapValues(currentHealth, 0, maxHealth / 2, 109, 109), 109, 255);
+            MothershipBelowHalf = true;
         }
     }
 
@@ -133,7 +137,8 @@ public class MothershipHealth : MonoBehaviour {
         //ExplosionFX.transform.localScale = gameObject.transform.localScale;
         Destroy(gameObject);
     }
-
+    
+    /*
     void OpenPortal()
     {
         LastPortalOpen = Time.time;
@@ -145,14 +150,17 @@ public class MothershipHealth : MonoBehaviour {
         LastPortalClose = Time.time;
         Portal.GetComponent<ParticleSystem>().Stop();
     }
-
+    
     void SpawnDefenders()
     {
         Vector3 RelativePos = _player.transform.position - transform.position;
         GameObject EnemyShip = Instantiate(Defender, SpawnLocation.transform.position, Quaternion.LookRotation(RelativePos));
         _enemyList.enemyList.Add(1); // Adds New Enemy to the List      
-    }
 
+
+
+    }
+    
     void MotherShipDefense()
     {
         if (30 < (Time.time - LastPortalOpen))
@@ -167,5 +175,5 @@ public class MothershipHealth : MonoBehaviour {
             ClosePortal();
         }
     }
-
+    */
 }
