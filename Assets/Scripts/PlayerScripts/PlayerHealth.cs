@@ -38,6 +38,7 @@ public class PlayerHealth : MonoBehaviour {
     public float coolDown;
     private bool onCD;
     private bool recover;
+    private bool safe;
 
     public GameObject Explosion;
     private GameObject ExplosionFX;
@@ -63,6 +64,7 @@ public class PlayerHealth : MonoBehaviour {
         currentHealth = maxHealth;
         onCD = false;
         recover = false;
+        safe = true;
 
         _fadeScreen = Camera.GetComponent<FadeScreen>();
 
@@ -71,8 +73,10 @@ public class PlayerHealth : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        StartCoroutine(RecoverInterval());
-	}
+        //StartCoroutine(RecoverInterval());
+        RecoverHealth();
+
+    }
 
     void Awake()
     {
@@ -116,29 +120,43 @@ public class PlayerHealth : MonoBehaviour {
     IEnumerator CoolDownHealth()
     {
         onCD = true;
-        yield return new WaitForSeconds(0.5f);
+        //yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(2.5f);
         onCD = false;
     }
 
+    /*
     IEnumerator RecoverInterval()
     {
         recover = true;
-        yield return new WaitForSeconds(5.0f);
-        RecoverHealth();
+        //yield return new WaitForSeconds(5.0f);
+        if (safe == true && (currentHealth < maxHealth) && currentHealth > 0)
+        {
+            //StartCoroutine(CoolDownHealth()); //Depricated
+            yield return new WaitForSeconds(2.5f);
+            CurrentHealth += 1;
+        };
+        //RecoverHealth();
         recover = false;
     }
-
-
+    */
+  
     void RecoverHealth()
     {
-
-            if (!onCD && currentHealth < maxHealth && currentHealth > 0)
+        if (status)
+        {
             {
                 StartCoroutine(CoolDownHealth());
+                //yield return new WaitForSeconds(2.5f);
                 CurrentHealth += 1;
             }
-
+            if (currentHealth == maxHealth)
+            {
+                currentHealth += 0;
+            }
+        }
     }
+    
 
     IEnumerator DeathSceneCountDown()
     {
@@ -148,17 +166,41 @@ public class PlayerHealth : MonoBehaviour {
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.tag == "EnemyLaser")
+        if (status)
         {
-            if (!onCD && currentHealth > 0)
-            {  
-                StartCoroutine(CoolDownDmg());
-                CurrentHealth -= 5;
+            if (other.name == "Nebula")
+            {
+                safe = false;
+            }
 
-                Points.ScoreOperator = "-";
-                Points.ScoreValue = 5;
-                GameObject SPoints = Instantiate(ScorePoints, transform.position + transform.forward * 35, Quaternion.LookRotation(Camera.transform.position));
-                ScoreManager.playerScore -= 5;  //Taking Damage Deducts Points
+            if (other.tag == "EnemyLaser")
+            {
+                safe = false;
+                if (!onCD && currentHealth > 0)
+                {
+                    StartCoroutine(CoolDownDmg());
+                    CurrentHealth -= 5;
+
+                    Points.ScoreOperator = "-";
+                    Points.ScoreValue = 5;
+                    GameObject SPoints = Instantiate(ScorePoints, transform.position + transform.forward * 35, Quaternion.LookRotation(Camera.transform.position));
+                    ScoreManager.playerScore -= 5;  //Taking Damage Deducts Points
+                }
+            }
+        }
+    }
+
+    void OnTriggerExit(Collider other)
+    {
+        if (status)
+        {
+            if (other.name == "Nebula")
+            {
+                safe = true;
+            }
+            if (other.tag == "EnemyLaser")
+            {
+                safe = true;
             }
         }
     }
@@ -179,16 +221,13 @@ public class PlayerHealth : MonoBehaviour {
             }
             //if (other.name == "DamageTest")
             if (other.name == "Nebula")
-            {
-                //float vol = Random.Range(volLowRange, volHighRange);
-                //source.PlayOneShot(dangerSound, vol);   
+            {                
                 if (!onCD && currentHealth > 0)
-                {        
+                {                         
                     StartCoroutine(CoolDownDmg());
                     CurrentHealth -= 1;
                     ScoreManager.playerScore -= 1;  //Taking Damage Deducts Points
-                }
-                //Debug.Log("Hurting");
+                }        
             }
         }
     }     

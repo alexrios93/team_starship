@@ -54,22 +54,22 @@ public class SpawnEnemies : MonoBehaviour {
     {
         if (status)  // Needed for ControlLayout
         {
-            if (PortalOpenDelay < (Time.time - LastPortalOpen))
+            if (PortalOpenDelay < (Time.timeSinceLevelLoad - LastPortalOpen))
             {
                 OpenPortal();
                 PortalIsOpen = true;
             }
 
-            if (SpawnDelay < (Time.time - LastSpawn))
+            if (SpawnDelay < (Time.timeSinceLevelLoad - LastSpawn))
             {
                 if (Count == 0)
                 {
-                    LastWaveStart = Time.time;
+                    LastWaveStart = Time.timeSinceLevelLoad;
                 }
 
-                if ( (SmallDelay < (Time.time - LastSmallDelay)) & (Count < WaveSize) )
+                if ( (SmallDelay < (Time.timeSinceLevelLoad - LastSmallDelay)) & (Count < WaveSize) )
                 {
-                    LastSmallDelay = Time.time;
+                    LastSmallDelay = Time.timeSinceLevelLoad;
                     SpawnEnemyShips();
                 }
 
@@ -80,7 +80,7 @@ public class SpawnEnemies : MonoBehaviour {
                 }
             }
 
-            if (PortalCloseDelay < (Time.time - LastPortalClose))
+            if (PortalCloseDelay < (Time.timeSinceLevelLoad - LastPortalClose))
             {
                 ClosePortal();
                 PortalIsOpen = false;
@@ -90,7 +90,7 @@ public class SpawnEnemies : MonoBehaviour {
 
     void OpenPortal()
     {
-        LastPortalOpen = Time.time;
+        LastPortalOpen = Time.timeSinceLevelLoad;
         Portal.GetComponent<ParticleSystem>().Play();
     }
 
@@ -133,7 +133,7 @@ public class SpawnEnemies : MonoBehaviour {
     }
     void ClosePortal()
     {
-        LastPortalClose = Time.time;
+        LastPortalClose = Time.timeSinceLevelLoad;
         Portal.GetComponent<ParticleSystem>().Stop();
     }
 }
