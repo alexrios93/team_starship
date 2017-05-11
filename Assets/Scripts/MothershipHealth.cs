@@ -44,6 +44,14 @@ public class MothershipHealth : MonoBehaviour {
     public int _scoreValue = 50;
     private GameObject Camera;
 
+    public GameObject SpawnLocation;
+    public GameObject Portal;
+    private float LastPortalOpen = -25.0f;
+    private float LastPortalClose = -15.0f;
+    public GameObject Defender;
+    private GameObject _player;
+    private VictoryOrDeath _enemyList;
+
     // Use this for initialization
     void Start()
     {
@@ -57,6 +65,10 @@ public class MothershipHealth : MonoBehaviour {
         currentHealth = maxHealth;
 
         Camera = GameObject.FindGameObjectWithTag("MainCamera");
+
+        Portal.GetComponent<ParticleSystem>().Stop();   // Needed for DefendMothership
+        _player = GameObject.FindGameObjectWithTag("Player");
+        _enemyList = Camera.GetComponent<VictoryOrDeath>();
     }
 
     public void TakeDamage(float damage)
@@ -65,6 +77,7 @@ public class MothershipHealth : MonoBehaviour {
         {
             StartCoroutine(CoolDownDmg());
             CurrentHealth -= damage;
+            MotherShipDefense();
         }
 
         //currentHealth -= damage;
@@ -120,4 +133,39 @@ public class MothershipHealth : MonoBehaviour {
         //ExplosionFX.transform.localScale = gameObject.transform.localScale;
         Destroy(gameObject);
     }
+
+    void OpenPortal()
+    {
+        LastPortalOpen = Time.time;
+        Portal.GetComponent<ParticleSystem>().Play();
+    }
+
+    void ClosePortal()
+    {
+        LastPortalClose = Time.time;
+        Portal.GetComponent<ParticleSystem>().Stop();
+    }
+
+    void SpawnDefenders()
+    {
+        Vector3 RelativePos = _player.transform.position - transform.position;
+        GameObject EnemyShip = Instantiate(Defender, SpawnLocation.transform.position, Quaternion.LookRotation(RelativePos));
+        _enemyList.enemyList.Add(1); // Adds New Enemy to the List      
+    }
+
+    void MotherShipDefense()
+    {
+        if (30 < (Time.time - LastPortalOpen))
+        {
+            OpenPortal();
+        }
+
+        SpawnDefenders();
+
+        if (30 < (Time.time - LastPortalClose))
+        {
+            ClosePortal();
+        }
+    }
+
 }

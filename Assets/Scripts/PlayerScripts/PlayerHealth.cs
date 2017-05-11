@@ -37,6 +37,7 @@ public class PlayerHealth : MonoBehaviour {
     public Image visualHealth;
     public float coolDown;
     private bool onCD;
+    private bool recover;
 
     public GameObject Explosion;
     private GameObject ExplosionFX;
@@ -52,6 +53,8 @@ public class PlayerHealth : MonoBehaviour {
     public GameObject ScorePoints;
     public int _scoreValue = 50;
 
+    private GameObject enemyLaser;
+
     // Use this for initialization
     void Start () {
         cachedY = healthTransform.position.y;
@@ -59,12 +62,16 @@ public class PlayerHealth : MonoBehaviour {
         minXValue = healthTransform.position.x - (healthTransform.rect.width * 2);
         currentHealth = maxHealth;
         onCD = false;
+        recover = false;
 
         _fadeScreen = Camera.GetComponent<FadeScreen>();
+
+        enemyLaser = GameObject.FindGameObjectWithTag("EnemyLaser");
     }
 	
 	// Update is called once per frame
 	void Update () {
+        StartCoroutine(RecoverInterval());
 	}
 
     void Awake()
@@ -106,11 +113,56 @@ public class PlayerHealth : MonoBehaviour {
         onCD = false;
     }
 
+    IEnumerator CoolDownHealth()
+    {
+        onCD = true;
+        yield return new WaitForSeconds(0.5f);
+        onCD = false;
+    }
+
+    IEnumerator RecoverInterval()
+    {
+        recover = true;
+        yield return new WaitForSeconds(5.0f);
+        RecoverHealth();
+        recover = false;
+    }
+
+
+    void RecoverHealth()
+    {
+
+            if (!onCD && currentHealth < maxHealth && currentHealth > 0)
+            {
+                StartCoroutine(CoolDownHealth());
+                CurrentHealth += 1;
+            }
+
+    }
+
     IEnumerator DeathSceneCountDown()
     {
         yield return new WaitForSeconds(2.5f);
         SceneManager.LoadScene("DeathScene");
     }
+
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.tag == "EnemyLaser")
+        {
+            if (!onCD && currentHealth > 0)
+            {  
+                StartCoroutine(CoolDownDmg());
+                CurrentHealth -= 5;
+
+                Points.ScoreOperator = "-";
+                Points.ScoreValue = 5;
+                GameObject SPoints = Instantiate(ScorePoints, transform.position + transform.forward * 35, Quaternion.LookRotation(Camera.transform.position));
+                ScoreManager.playerScore -= 5;  //Taking Damage Deducts Points
+            }
+        }
+    }
+
 
     void OnTriggerStay(Collider other)
     {
@@ -126,13 +178,12 @@ public class PlayerHealth : MonoBehaviour {
                 //Debug.Log("Healing");
             }
             //if (other.name == "DamageTest")
-            if (other.name == "Nebula" || other.name == "EnemyLaser")
+            if (other.name == "Nebula")
             {
                 //float vol = Random.Range(volLowRange, volHighRange);
-                //source.PlayOneShot(dangerSound, vol);                
-
+                //source.PlayOneShot(dangerSound, vol);   
                 if (!onCD && currentHealth > 0)
-                {
+                {        
                     StartCoroutine(CoolDownDmg());
                     CurrentHealth -= 1;
                     ScoreManager.playerScore -= 1;  //Taking Damage Deducts Points
