@@ -37,7 +37,7 @@ public class SpawnEnemies : MonoBehaviour {
     public int WaveSize = 5;
     private int Count = 0;
 
-
+    public static bool PortalIsOpen = false;
 
     // Use this for initialization
     void Start ()
@@ -57,6 +57,7 @@ public class SpawnEnemies : MonoBehaviour {
             if (PortalOpenDelay < (Time.time - LastPortalOpen))
             {
                 OpenPortal();
+                PortalIsOpen = true;
             }
 
             if (SpawnDelay < (Time.time - LastSpawn))
@@ -82,6 +83,7 @@ public class SpawnEnemies : MonoBehaviour {
             if (PortalCloseDelay < (Time.time - LastPortalClose))
             {
                 ClosePortal();
+                PortalIsOpen = false;
             }
         }
     }

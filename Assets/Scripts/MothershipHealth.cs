@@ -78,7 +78,10 @@ public class MothershipHealth : MonoBehaviour {
         if (!onCD && currentHealth > 0)
         {
             StartCoroutine(CoolDownDmg());
-            CurrentHealth -= damage;
+            if(SpawnEnemies.PortalIsOpen)
+            {
+                CurrentHealth -= damage;
+            }
             //MotherShipDefense();
         }
 
