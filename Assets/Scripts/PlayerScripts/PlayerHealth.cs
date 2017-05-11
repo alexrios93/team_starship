@@ -145,6 +145,7 @@ public class PlayerHealth : MonoBehaviour {
     {
         if (status)
         {
+            if (safe == true && (currentHealth < maxHealth / 4) && currentHealth > 0)
             {
                 StartCoroutine(CoolDownHealth());
                 //yield return new WaitForSeconds(2.5f);
