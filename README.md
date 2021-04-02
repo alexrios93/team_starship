@@ -29,7 +29,7 @@ This project requires [Unity 5.5.2](https://unity3d.com/get-unity/download/archi
 
 ## Built with
 
-- [C#](https://www.ruby-lang.org/en/) - Language used to script game logic
+- [C#](https://docs.microsoft.com/en-us/dotnet/csharp/) - Language used to script game logic
 - [Unity](https://unity.com/) - Engine used to develop and build the project
 - [Blender](https://www.blender.org/) - Used to design the game models and assets
 
